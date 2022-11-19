@@ -49,14 +49,13 @@ public class BookingService {
                         HelpFunction.dateToSqlDate(end) + "', 0, " + paymentState +
                         ", " + client.getId() + ", " + room.getId() + ")";
         int res = bookingRepository.updateBooking(statement, query);
-        if (res == 1) {
-            return true;
-        } else {
+        if (res != 1) {
             throw new SQLException("Не удалось добавить бронь");
         }
+        return true;
     }
 
-    public Optional<Booking> getTodayStayBookingByPassport(@NotNull String passport) throws SQLException {
+    public Booking getTodayStayBookingByPassport(@NotNull String passport) throws SQLException {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
         if (list.isEmpty()) {
@@ -67,12 +66,12 @@ public class BookingService {
                 "Прибывание = '" + HelpFunction.dateToSqlDate(new Date()) + "'";
         Optional<List<Booking>> list2 = bookingRepository.readBookings(statement, query);
         if (list2.isEmpty()) {
-            throw new IllegalArgumentException("Брони на сегодня на данного клиента нет");
+            throw new IllegalArgumentException("Брони на заезд на сегодня на данного клиента нет");
         }
-        return Optional.of(list2.get().get(0));
+        return list2.get().get(0);
     }
 
-    public Optional<Booking> getTodayBookingByPassport(@NotNull String passport) throws SQLException {
+    public Booking getTodayBookingByPassport(@NotNull String passport) throws SQLException {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
         if (list.isEmpty()) {
@@ -86,7 +85,7 @@ public class BookingService {
         if (list2.isEmpty()) {
             throw new IllegalArgumentException("Брони на сегодня на данного клиента нет");
         }
-        return Optional.of(list2.get().get(0));
+        return list2.get().get(0);
     }
 
     public boolean setPaymentStatus(@NotNull Booking booking, boolean status) throws SQLException {

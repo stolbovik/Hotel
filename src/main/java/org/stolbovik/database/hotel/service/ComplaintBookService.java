@@ -3,7 +3,6 @@ package org.stolbovik.database.hotel.service;
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Client;
 import org.stolbovik.database.hotel.models.EntryInBook;
-import org.stolbovik.database.hotel.models.StatusOfCleaningRequest;
 import org.stolbovik.database.hotel.repository.ComplaintBookRepository;
 
 import java.sql.SQLException;
@@ -41,10 +40,10 @@ public class ComplaintBookService {
         return true;
     }
 
-    public boolean addNewEnrty(@NotNull String message,
+    public boolean addNewEntry(@NotNull String message,
                                @NotNull Client client) throws SQLException {
-        String query = "inset into [Книга жалоб и предложений] ([ID клиента], Сообщение) " +
-                "values (" + client.getId() + ", '" + message + "')";
+        String query = "inset into [Книга жалоб и предложений] ([ID клиента], Сообщение, [Ответ администратора]) " +
+                "values (" + client.getId() + ", '" + message + "', ' ')";
         int res = complaintBookRepository.updateComplaintBook(statement, query);
         if (res != 1) {
             throw  new SQLException("Не удалось добавить запись клиента в книгу");

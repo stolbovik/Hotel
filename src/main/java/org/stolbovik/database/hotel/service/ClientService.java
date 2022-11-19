@@ -19,10 +19,13 @@ public class ClientService {
         this.statement = statement;
     }
 
-    public Optional<Client> getClientByPassport(@NotNull String passport) throws SQLException {
+    public Client getClientByPassport(@NotNull String passport) throws SQLException {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
-        return list.map(clients -> clients.get(0));
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Данного клиента нет в баззе");
+        }
+        return list.get().get(0);
     }
 
     public boolean addClient(@NotNull String firstName,
@@ -33,11 +36,10 @@ public class ClientService {
                         + firstName + ' ' + lastName + ' ' + fatherName + "', " +
                         passport + ")";
         int res = clientRepository.updateClient(statement, query);
-        if (res == 1) {
-            return true;
-        } else {
+        if (res != 1) {
             throw new SQLException("Не удалось добавить вас в систему отеля");
         }
+        return true;
     }
 
 }

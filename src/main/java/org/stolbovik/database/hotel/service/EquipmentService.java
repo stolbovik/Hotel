@@ -16,7 +16,7 @@ public class EquipmentService {
     private final Statement statement;
 
 
-    public EquipmentService(Statement statement) {
+    public EquipmentService(@NotNull Statement statement) {
         this.equipmentRepository = new EquipmentRepository();
         this.statement = statement;
     }

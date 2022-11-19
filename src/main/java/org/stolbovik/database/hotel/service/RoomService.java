@@ -28,25 +28,25 @@ public class RoomService {
         this.statement = statement;
     }
 
-    public List<Room> getRooms() throws SQLException {
+    public List<Room> getAllRooms() throws SQLException {
         String query = "select * from Комнаты";
         Optional<List<Room>> list = roomsRepository.readRooms(statement, query);
         if (list.isPresent()) {
             return list.get();
         }
-        throw new SQLException("Таблица \"Комнаты\" пуста\n");
+        throw new SQLException("В отеле нет комнат\n");
     }
 
-    public List<Room> getFreeRooms(@NotNull Date start,
+    public Optional<List<Room>> getFreeRooms(@NotNull Date start,
                                    @NotNull Date end) throws SQLException {
         String query = "select * from Бронирование";
-        List<Room> allRooms = getRooms();
+        List<Room> allRooms = getAllRooms();
         List<Booking> allBookings;
         Optional<List<Booking>> list = bookingRepository.readBookings(statement, query);
         if (list.isPresent()) {
             allBookings = list.get();
         } else {
-            throw new SQLException("Таблица \"Бронирование\" пуста\n");
+            throw new SQLException("Ни на какой номер бронирования нет\n");
         }
         Iterator<Room> roomIterator = allRooms.iterator();
         Iterator<Booking> bookingIterator = allBookings.iterator();
@@ -54,19 +54,21 @@ public class RoomService {
             while (bookingIterator.hasNext()) {
                 Room room = roomIterator.next();
                 Booking booking = bookingIterator.next();
-                if (room.getId() == booking.getIdOfRoom() &&
-                    ((start.compareTo(booking.getDateOfDeparture()) <= 0) &&
-                    (start.compareTo(booking.getDateOfStay()) >= 0) ||
-                    (end.compareTo(booking.getDateOfDeparture()) <= 0 &&
-                    (end.compareTo(booking.getDateOfStay()) >= 0)))) {
+                if (room.getId() == booking.getIdOfRoom() && (
+                    (start.compareTo(booking.getDateOfDeparture()) <= 0) && (start.compareTo(booking.getDateOfStay()) >= 0) ||
+                    (end.compareTo(booking.getDateOfDeparture()) <= 0) && (end.compareTo(booking.getDateOfStay()) >= 0) ||
+                    (start.compareTo(booking.getDateOfStay()) <= 0) && (end.compareTo(booking.getDateOfDeparture()) >= 0))) {
                     roomIterator.remove();
                 }
             }
         }
-        return allRooms;
+        if (allRooms.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(allRooms);
     }
 
-    public void setCleaningStatus(@NotNull Room room, boolean status) throws SQLException {
+    public boolean setCleaningStatus(@NotNull Room room, boolean status) throws SQLException {
         int temp;
         if (status) {
             temp = 1;
@@ -78,6 +80,7 @@ public class RoomService {
         if (res != 1) {
             throw new SQLException("Не удалось изменить статус заселения у данного бронирования");
         }
+        return true;
     }
 
 }

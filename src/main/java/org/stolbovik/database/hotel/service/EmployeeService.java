@@ -42,10 +42,10 @@ public class EmployeeService {
         String query = "select * from Сотрудники where [ID должности] = " + post.getId() +
                 " and Занят = 0";
         Optional<List<Employee>> list = employeeRepository.readEmployees(statement, query);
-        if (list.isPresent()) {
-            return list.get();
+        if (list.isEmpty()) {
+            throw new SQLException("Нет свободных сотрудников этой должности\n");
         }
-        throw new SQLException("Нет свободных сотрудников этой должности\n");
+        return list.get();
     }
 
     public boolean addNewEmployee(@NotNull String firstName,
@@ -56,7 +56,7 @@ public class EmployeeService {
                                   @NotNull Date birthday) throws SQLException {
         String query = "insert into Сотрудники (ФИО, Паспорт, [Дата рождения], [ID Должности]) " +
                 "values ('" + firstName + " " + lastName + fatherName + "', " + passport
-                + ", " + post.getId() + ")";
+                + ", '" + HelpFunction.dateToSqlDate(birthday) + "'," + post.getId() + ")";
         int res = employeeRepository.updateEmployee(statement, query);
         if (res != 1) {
             throw new SQLException("Не удалось добавить сотрудника в базу");

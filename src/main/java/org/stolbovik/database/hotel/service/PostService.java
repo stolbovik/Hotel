@@ -19,13 +19,13 @@ public class PostService {
         this.statement = statement;
     }
 
-    public List<Post> getPosts() throws SQLException {
+    public List<Post> getAllPosts() throws SQLException {
         String query = "select * from Должности";
         Optional<List<Post>> list = postRepository.readPost(statement, query);
         if (list.isPresent()) {
             return list.get();
         }
-        throw new SQLException("Таблица \"Должности\" пуста\n");
+        throw new SQLException("В отеле нет должностей");
     }
 
     public Post getPostByName(@NotNull String name) throws SQLException {
