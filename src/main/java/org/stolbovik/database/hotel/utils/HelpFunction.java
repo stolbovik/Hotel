@@ -2,6 +2,7 @@ package org.stolbovik.database.hotel.utils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Period;
 import java.util.Date;
 
 public abstract class HelpFunction {
@@ -49,4 +50,15 @@ public abstract class HelpFunction {
         return true;
     }
 
+    public static String dateToSqlDate(@NotNull Date date) {
+        int year = date.getYear() + 1900;
+        int month = date.getMonth() + 1;
+        int day = date.getDate();
+        return year + "-" + month + "-" + day;
+    }
+
+    public static boolean checkAdulthood(@NotNull Date date) {
+        date.setYear(date.getYear() + 18);
+        return !(date.compareTo(new Date()) > 0);
+    }
 }

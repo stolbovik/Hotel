@@ -13,7 +13,7 @@ import java.util.Optional;
 public class EmployeeRepository {
 
     public Optional<List<Employee>> readEmployees(@NotNull Statement statement,
-                                                        @NotNull String query) throws SQLException {
+                                                  @NotNull String query) throws SQLException {
         ResultSet resultSet = statement.executeQuery(query);
         if (!resultSet.next()) {
             return Optional.empty();
@@ -35,7 +35,7 @@ public class EmployeeRepository {
     }
 
     public int updateEmployee(@NotNull Statement statement,
-                                     @NotNull String query) throws SQLException {
+                              @NotNull String query) throws SQLException {
         return statement.executeUpdate(query);
     }
 

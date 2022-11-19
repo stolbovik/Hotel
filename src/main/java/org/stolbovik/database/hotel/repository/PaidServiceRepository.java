@@ -31,7 +31,7 @@ public class PaidServiceRepository {
     }
 
     public int updatePaidService(@NotNull Statement statement,
-                                        @NotNull String query) throws SQLException {
+                                 @NotNull String query) throws SQLException {
         return statement.executeUpdate(query);
     }
 

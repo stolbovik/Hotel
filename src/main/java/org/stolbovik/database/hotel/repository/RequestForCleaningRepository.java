@@ -13,7 +13,7 @@ import java.util.Optional;
 public class RequestForCleaningRepository {
 
     public Optional<List<RequestForCleaning>> readRequestForCleaning(@NotNull Statement statement,
-                                                                            @NotNull String query) throws SQLException {
+                                                                     @NotNull String query) throws SQLException {
         ResultSet resultSet = statement.executeQuery(query);
         if (!resultSet.next()) {
             return Optional.empty();
@@ -32,7 +32,7 @@ public class RequestForCleaningRepository {
     }
 
     public int updateRequestForCleaning(@NotNull Statement statement,
-                                               @NotNull String query) throws SQLException {
+                                        @NotNull String query) throws SQLException {
         return statement.executeUpdate(query);
     }
 

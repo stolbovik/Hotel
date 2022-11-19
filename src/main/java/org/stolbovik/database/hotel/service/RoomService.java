@@ -21,7 +21,7 @@ public class RoomService {
     private final StatusOfCleaningRequestRepository statusOfCleaningRequestRepository;
     private final Statement statement;
 
-    public RoomService(Statement statement) {
+    public RoomService(@NotNull Statement statement) {
         this.roomsRepository = new RoomsRepository();
         this.bookingRepository = new BookingRepository();
         this.statusOfCleaningRequestRepository = new StatusOfCleaningRequestRepository();

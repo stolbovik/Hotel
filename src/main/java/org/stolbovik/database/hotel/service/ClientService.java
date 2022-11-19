@@ -14,7 +14,7 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final Statement statement;
 
-    public ClientService(Statement statement) {
+    public ClientService(@NotNull Statement statement) {
         this.clientRepository = new ClientRepository();
         this.statement = statement;
     }
@@ -29,8 +29,8 @@ public class ClientService {
                              @NotNull String lastName,
                              @NotNull String fatherName,
                              @NotNull String passport) throws SQLException {
-        String query =  "insert into Клиенты (ФИО, Паспорт) values ("
-                        + firstName + ' ' + lastName + ' ' + fatherName + ", " +
+        String query =  "insert into Клиенты (ФИО, Паспорт) values ('"
+                        + firstName + ' ' + lastName + ' ' + fatherName + "', " +
                         passport + ")";
         int res = clientRepository.updateClient(statement, query);
         if (res == 1) {

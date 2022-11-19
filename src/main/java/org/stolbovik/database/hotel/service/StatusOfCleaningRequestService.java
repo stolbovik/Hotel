@@ -1,5 +1,6 @@
 package org.stolbovik.database.hotel.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.StatusOfCleaningRequest;
 import org.stolbovik.database.hotel.repository.StatusOfCleaningRequestRepository;
 
@@ -13,7 +14,7 @@ public class StatusOfCleaningRequestService {
     private final StatusOfCleaningRequestRepository statusOfCleaningRequestRepository;
     private final Statement statement;
 
-    public StatusOfCleaningRequestService(Statement statement) {
+    public StatusOfCleaningRequestService(@NotNull Statement statement) {
         this.statusOfCleaningRequestRepository = new StatusOfCleaningRequestRepository();
         this.statement = statement;
     }
@@ -28,9 +29,9 @@ public class StatusOfCleaningRequestService {
         throw new SQLException("Таблица \"Статус заявки уборки\" пуста\n");
     }
 
-    public StatusOfCleaningRequest getStatusOfCleaningRequestsByName(String name)
+    public StatusOfCleaningRequest getStatusOfCleaningRequestsByName(@NotNull String name)
             throws SQLException {
-        String query = "select * from [Статус заявки уборки] where Статус = " + name;
+        String query = "select * from [Статус заявки уборки] where Статус = '" + name + "'";
         Optional<List<StatusOfCleaningRequest>> list =  statusOfCleaningRequestRepository
                 .readStatusOfCleaningRequest(statement, query);
         if (list.isPresent()) {

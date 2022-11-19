@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ComplaintBookRepository {
 
     public Optional<List<EntryInBook>> readEntrys(@NotNull Statement statement,
-                                                        @NotNull String query) throws SQLException {
+                                                  @NotNull String query) throws SQLException {
         ResultSet resultSet = statement.executeQuery(query);
         if (!resultSet.next()) {
             return Optional.empty();
@@ -30,7 +30,7 @@ public class ComplaintBookRepository {
         return Optional.of(entrysInBooks);
     }
     public int updateComplaintBook(@NotNull Statement statement,
-                                        @NotNull String query) throws SQLException {
+                                   @NotNull String query) throws SQLException {
         return statement.executeUpdate(query);
     }
 

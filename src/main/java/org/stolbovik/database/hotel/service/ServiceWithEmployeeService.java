@@ -18,7 +18,7 @@ public class ServiceWithEmployeeService {
     private final EmployeeRepository employeeRepository;
     private final Statement statement;
 
-    public ServiceWithEmployeeService(Statement statement) {
+    public ServiceWithEmployeeService(@NotNull Statement statement) {
         this.serviceWithEmployeeRepository = new ServiceWithEmployeeRepository();
         this.employeeRepository = new EmployeeRepository();
         this.statement = statement;

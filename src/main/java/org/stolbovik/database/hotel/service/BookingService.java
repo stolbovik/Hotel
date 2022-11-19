@@ -6,6 +6,7 @@ import org.stolbovik.database.hotel.models.Client;
 import org.stolbovik.database.hotel.models.Room;
 import org.stolbovik.database.hotel.repository.BookingRepository;
 import org.stolbovik.database.hotel.repository.ClientRepository;
+import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,7 +20,7 @@ public class BookingService {
     private final ClientRepository clientRepository;
     private final Statement statement;
 
-    public BookingService(Statement statement) {
+    public BookingService(@NotNull Statement statement) {
         this.bookingRepository = new BookingRepository();
         this.clientRepository = new ClientRepository();
         this.statement = statement;
@@ -38,11 +39,11 @@ public class BookingService {
                                 @NotNull Date end,
                                 @NotNull Client client,
                                 @NotNull Room room,
-                          int paymentState) throws SQLException {
+                                int paymentState) throws SQLException {
         String query =  "insert into Бронирование (Прибывание, Выезд, [Статус заселения]," +
-                        " [Статус оплаты], [ID Клиента], [Номер комнаты]) values (" +
-                        java.sql.Date.valueOf(String.valueOf(start)) + ", " +
-                        java.sql.Date.valueOf(String.valueOf(end)) + ", 0, " + paymentState +
+                " [Статус оплаты], [ID Клиента], [Номер комнаты]) values ('" +
+                        HelpFunction.dateToSqlDate(start) + "', '" +
+                        HelpFunction.dateToSqlDate(end) + "', 0, " + paymentState +
                         ", " + client.getId() + ", " + room.getId() + ")";
         int res = bookingRepository.updateBooking(statement, query);
         if (res == 1) {
@@ -60,7 +61,7 @@ public class BookingService {
         }
         Client client = list.get().get(0);
         query = "select * from Бронирование where [ID Клиента] = " + client.getId() + " AND " +
-                "Прибывание = " + java.sql.Date.valueOf(String.valueOf(new Date()));
+                "Прибывание = '" + HelpFunction.dateToSqlDate(new Date()) + "'";
         Optional<List<Booking>> list2 = bookingRepository.readBookings(statement, query);
         if (list2.isEmpty()) {
             throw new IllegalArgumentException("Брони на сегодня на данного клиента нет");
@@ -76,8 +77,8 @@ public class BookingService {
         }
         Client client = list.get().get(0);
         query = "select * from Бронирование where [ID Клиента] = " + client.getId() + " AND " +
-                "Прибывание <= " + java.sql.Date.valueOf(String.valueOf(new Date())) +
-                " AND Выезд >= " + java.sql.Date.valueOf(String.valueOf(new Date()));
+                "Прибывание <= '" + HelpFunction.dateToSqlDate(new Date()) +
+                "' AND Выезд >= '" + HelpFunction.dateToSqlDate(new Date()) + "'";
         Optional<List<Booking>> list2 = bookingRepository.readBookings(statement, query);
         if (list2.isEmpty()) {
             throw new IllegalArgumentException("Брони на сегодня на данного клиента нет");
@@ -117,8 +118,8 @@ public class BookingService {
 
     public boolean changeDateOfDeparture(@NotNull Booking booking,
                                          @NotNull Date newDate) throws SQLException {
-        String query =  "update Бронирование set Выезд = " + java.sql.Date.valueOf(String.valueOf(newDate)) +
-                        " where ID = " + booking.getId();
+        String query =  "update Бронирование set Выезд = '" + HelpFunction.dateToSqlDate(newDate) +
+                        "' where ID = " + booking.getId();
         int res = bookingRepository.updateBooking(statement, query);
         if (res != 1) {
             throw new SQLException("Не удалось изменить дату выезда у данного бронирования");

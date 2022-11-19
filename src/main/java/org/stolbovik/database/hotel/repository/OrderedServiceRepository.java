@@ -13,7 +13,7 @@ import java.util.Optional;
 public class OrderedServiceRepository {
 
     public Optional<List<OrderedService>> readOrderedServices(@NotNull Statement statement,
-                                                                     @NotNull String query) throws SQLException {
+                                                              @NotNull String query) throws SQLException {
         ResultSet resultSet = statement.executeQuery(query);
         if (!resultSet.next()) {
             return Optional.empty();
@@ -31,7 +31,7 @@ public class OrderedServiceRepository {
     }
 
     public int updateOrderedService(@NotNull Statement statement,
-                                           @NotNull String query) throws SQLException {
+                                    @NotNull String query) throws SQLException {
         return statement.executeUpdate(query);
     }
 
