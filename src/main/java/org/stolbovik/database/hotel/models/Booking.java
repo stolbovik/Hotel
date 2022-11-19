@@ -1,6 +1,7 @@
 package org.stolbovik.database.hotel.models;
 
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 

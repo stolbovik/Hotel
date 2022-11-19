@@ -49,10 +49,10 @@ public class PostService {
 
     public boolean incrementCountOfRequiredEmployees(@NotNull Post post) throws SQLException {
         String query = "update Должности set [Количество требуемых работников] = " +
-                (post.getCountOfRequiredEmployees() - 1) + " where ID = " + post.getId();
+                (post.getCountOfRequiredEmployees() + 1) + " where ID = " + post.getId();
         int res = postRepository.updatePost(statement, query);
         if (res != 1) {
-            throw new SQLException("Не удалось уменьшить количество требуемых работников");
+            throw new SQLException("Не удалось увеличить количество требуемых работников");
         }
         return true;
     }

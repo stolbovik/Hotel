@@ -2,7 +2,6 @@ package org.stolbovik.database.hotel.utils;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Period;
 import java.util.Date;
 
 public abstract class HelpFunction {
@@ -60,5 +59,10 @@ public abstract class HelpFunction {
     public static boolean checkAdulthood(@NotNull Date date) {
         date.setYear(date.getYear() + 18);
         return !(date.compareTo(new Date()) > 0);
+    }
+
+    public static long getDayBetweenDate(@NotNull Date start,
+                                         @NotNull Date end) {
+        return (end.getTime() - start.getTime())/(24 * 60 * 60 * 1000);
     }
 }

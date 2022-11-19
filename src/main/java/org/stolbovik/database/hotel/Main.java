@@ -1,18 +1,8 @@
 package org.stolbovik.database.hotel;
 
-import org.stolbovik.database.hotel.models.Booking;
-import org.stolbovik.database.hotel.models.Role;
-import org.stolbovik.database.hotel.models.Room;
-import org.stolbovik.database.hotel.repository.BookingRepository;
-import org.stolbovik.database.hotel.repository.ComplaintBookRepository;
-import org.stolbovik.database.hotel.repository.RoomsRepository;
-import org.stolbovik.database.hotel.utils.Constatns;
-import org.stolbovik.database.hotel.utils.DBConnector;
+import org.stolbovik.database.hotel.utils.HelpFunction;
 
-import java.sql.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 public class Main {
 
@@ -50,10 +40,6 @@ public class Main {
 
         dbConnector.close();*/
 
-        Date date = new Date();
-        date.setYear(date.getYear() + 15);
-        System.out.println(date);
-        System.out.println(date.getYear());
 
     }
 }

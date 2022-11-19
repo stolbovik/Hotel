@@ -1,6 +1,7 @@
 package org.stolbovik.database.hotel.models;
 
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 
@@ -11,9 +12,9 @@ public class Employee {
     private String FIO;
     private long passport;
     private Date birthday;
-    private int idOFPost;
+    private Integer idOFPost;
     private boolean statusOfEmployment;
-    private int idOfEquipment;
+    private Integer idOfEquipment;
     private int prize;
 
     public boolean getStatusOfEmployment() {

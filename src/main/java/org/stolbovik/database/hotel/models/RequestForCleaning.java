@@ -1,6 +1,7 @@
 package org.stolbovik.database.hotel.models;
 
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 
@@ -11,6 +12,6 @@ public class RequestForCleaning {
     private int idOfBooking;
     private int idOfStatusRequest;
     private Date dateOfRequest;
-    private int idOfEmployee;
+    private Integer idOfEmployee;
 
 }

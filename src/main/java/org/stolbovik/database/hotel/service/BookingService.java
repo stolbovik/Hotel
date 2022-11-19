@@ -6,6 +6,7 @@ import org.stolbovik.database.hotel.models.Client;
 import org.stolbovik.database.hotel.models.Room;
 import org.stolbovik.database.hotel.repository.BookingRepository;
 import org.stolbovik.database.hotel.repository.ClientRepository;
+import org.stolbovik.database.hotel.repository.RoomsRepository;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
@@ -18,11 +19,13 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final ClientRepository clientRepository;
+    private final RoomsRepository roomsRepository;
     private final Statement statement;
 
     public BookingService(@NotNull Statement statement) {
         this.bookingRepository = new BookingRepository();
         this.clientRepository = new ClientRepository();
+        this.roomsRepository = new RoomsRepository();
         this.statement = statement;
     }
 
@@ -125,6 +128,32 @@ public class BookingService {
             throw new SQLException("Не удалось изменить дату выезда у данного бронирования");
         }
         return true;
+    }
+
+    public int getSumIncome(@NotNull Date start,
+                            @NotNull Date end) throws SQLException {
+        List<Booking> list = getBookings();
+        int income = 0;
+        for(Booking booking: list) {
+            if ((start.compareTo(booking.getDateOfStay()) < 0) && (end.compareTo(booking.getDateOfStay()) < 0) ||
+                (start.compareTo(booking.getDateOfDeparture()) > 0) && (end.compareTo(booking.getDateOfDeparture()) > 0)) {
+                continue;
+            }
+            String query = "select * from Комнаты where ID = " + booking.getIdOfRoom();
+            int price = roomsRepository.readRooms(statement, query).get().get(0).getPriceInDay();
+            long relativelyDay = 0;
+            if ((start.compareTo(booking.getDateOfStay()) <= 0) && (end.compareTo(booking.getDateOfDeparture()) <= 0)) {
+                relativelyDay = HelpFunction.getDayBetweenDate(booking.getDateOfStay(),end);
+            } else if ((start.compareTo(booking.getDateOfStay()) <= 0) && (end.compareTo(booking.getDateOfDeparture()) >= 0)) {
+                relativelyDay = HelpFunction.getDayBetweenDate(booking.getDateOfStay(),booking.getDateOfDeparture());
+            } else if ((start.compareTo(booking.getDateOfStay()) >= 0) && (end.compareTo(booking.getDateOfDeparture()) <= 0)) {
+                relativelyDay = HelpFunction.getDayBetweenDate(start, end);
+            } else if ((start.compareTo(booking.getDateOfStay()) >= 0) && (end.compareTo(booking.getDateOfDeparture()) >= 0)) {
+                relativelyDay = HelpFunction.getDayBetweenDate(start, booking.getDateOfDeparture());
+            }
+            income += price * relativelyDay;
+        }
+        return income;
     }
 
 }

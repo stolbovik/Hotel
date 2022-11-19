@@ -6,7 +6,7 @@ import lombok.Data;
 public class ServiceWithEmployee {
 
     private int id;
-    private int idService;
-    private int idEmployee;
+    private Integer idService;
+    private Integer idEmployee;
 
 }

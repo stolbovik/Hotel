@@ -31,8 +31,43 @@ public class RequestForCleaningService {
         if (res == 1) {
             return true;
         } else {
-            throw new SQLException("Не удалось добавить заявки на бронирование");
+            throw new SQLException("Не удалось добавить заявку на бронирование");
         }
+    }
+
+    public boolean addRequest(@NotNull Booking booking) throws SQLException {
+        String query = "insert into [Заявки на уборку] ([Номер бронирования], [Статус заявки], " +
+                "[Дата заявки], Выполняющий) values (" + booking.getId() + ", 1, '" +
+                HelpFunction.dateToSqlDate(new Date()) + ")";
+        int res = requestForCleaningRepository.updateRequestForCleaning(statement, query);
+        if (res == 1) {
+            return true;
+        } else {
+            throw new SQLException("Не удалось добавить заявку на бронирование");
+        }
+    }
+
+    public boolean assignAnEmployee(@NotNull Employee employee,
+                                    @NotNull RequestForCleaning requestForCleaning) throws SQLException {
+        String query = "update [Заявки на уборку] set Выполняющий = " + employee.getId() +
+                ", [Статус заявки] = 2 where ID = " + requestForCleaning.getId();
+        int res = requestForCleaningRepository.updateRequestForCleaning(statement, query);
+        if (res == 1) {
+            return true;
+        } else {
+            throw new SQLException("Не удалось назначить сотрудника на уборку");
+        }
+    }
+
+    public boolean setStatusOfRequest(@NotNull RequestForCleaning requestForCleaning,
+                                      @NotNull StatusOfCleaningRequest statusOfCleaningRequest) throws SQLException {
+        String query =  "update [Заявки на уборку] set [Статус заявки] = " + statusOfCleaningRequest.getId()
+                        + " where ID = " + requestForCleaning.getId();
+        int res = requestForCleaningRepository.updateRequestForCleaning(statement, query);
+        if (res != 1) {
+            throw new SQLException("Не удалось изменить статус заявки на уборку");
+        }
+        return true;
     }
 
 }
