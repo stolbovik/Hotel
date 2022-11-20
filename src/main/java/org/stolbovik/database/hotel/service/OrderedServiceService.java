@@ -18,7 +18,7 @@ public class OrderedServiceService {
     private final OrderedServiceRepository orderedServiceRepository;
     private final Statement statement;
 
-    private OrderedServiceService(@NotNull Statement statement) {
+    public OrderedServiceService(@NotNull Statement statement) {
         this.orderedServiceRepository = new OrderedServiceRepository();
         this.statement = statement;
     }

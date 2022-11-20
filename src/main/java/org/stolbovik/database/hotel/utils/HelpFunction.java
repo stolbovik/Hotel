@@ -6,18 +6,17 @@ import java.util.Date;
 
 public abstract class HelpFunction {
 
-    public static boolean checkDates(@NotNull Date start,
-                                     @NotNull Date end) {
+    public static void checkDates(@NotNull Date start,
+                                  @NotNull Date end) throws IllegalArgumentException {
         if(start.compareTo(end) >= 0) {
             throw new IllegalArgumentException("Дата заезда должна быть раньше даты выезда");
         }
         if (start.compareTo(new Date()) <= 0) {
             throw new IllegalArgumentException("Дата заезда должна быть указана в будущем");
         }
-        return true;
     }
 
-    public static boolean checkPassport(@NotNull String passport) {
+    public static void checkPassport(@NotNull String passport) throws IllegalArgumentException {
         if (passport.length() != 10) {
             throw new IllegalArgumentException("Неккоректные паспортные данные");
         }
@@ -27,10 +26,9 @@ public abstract class HelpFunction {
                 throw new IllegalArgumentException("Неккоректные паспортные данные");
             }
         }
-        return true;
     }
 
-    public static boolean checkName(@NotNull String name) {
+    public static void checkName(@NotNull String name) throws IllegalArgumentException {
         for (int i = 0; i < 10; i++) {
             char let = name.charAt(i);
             if (!Character.isLetter(let) ||
@@ -39,14 +37,12 @@ public abstract class HelpFunction {
                 throw new IllegalArgumentException("Неккоректное введённое имя");
             }
         }
-        return true;
     }
 
-    public static boolean checkDate(@NotNull Date date) {
+    public static void checkDate(@NotNull Date date) throws IllegalArgumentException {
         if (date.compareTo(new Date()) < 0) {
             throw new IllegalArgumentException("Неккоректная дата");
         }
-        return true;
     }
 
     public static String dateToSqlDate(@NotNull Date date) {
@@ -56,13 +52,15 @@ public abstract class HelpFunction {
         return year + "-" + month + "-" + day;
     }
 
-    public static boolean checkAdulthood(@NotNull Date date) {
+    public static void checkAdulthood(@NotNull Date date) {
         date.setYear(date.getYear() + 18);
-        return !(date.compareTo(new Date()) > 0);
+        if (date.compareTo(new Date()) > 0) {
+            throw new IllegalArgumentException("Мы нанимаем только совершеннолетних");
+        }
     }
 
-    public static long getDayBetweenDate(@NotNull Date start,
+    public static int getDayBetweenDate(@NotNull Date start,
                                          @NotNull Date end) {
-        return (end.getTime() - start.getTime())/(24 * 60 * 60 * 1000);
+        return (int)Math.ceil((float)(end.getTime() - start.getTime())/(24 * 60 * 60 * 1000));
     }
 }

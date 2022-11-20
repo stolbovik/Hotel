@@ -1,9 +1,8 @@
 package org.stolbovik.database.hotel.models;
 
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 public class RequestForCleaning {

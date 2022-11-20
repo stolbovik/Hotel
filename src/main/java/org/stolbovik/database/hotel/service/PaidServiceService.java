@@ -19,12 +19,12 @@ public class PaidServiceService {
         this.statement = statement;
     }
 
-    public PaidService getPaidServiceByName(@NotNull String name) throws SQLException {
+    public PaidService getPaidServiceByName(@NotNull String name) throws SQLException, IllegalArgumentException {
         String query = "select * from [Платные услуги] where Название = '" + name + "'";
         Optional<List<PaidService>> list = paidServiceRepository.readPaidServices(statement, query);
         if (list.isPresent()) {
             return list.get().get(0);
         }
-        throw new SQLException("Данной платной услуги нет");
+        throw new IllegalArgumentException("Данной платной услуги нет");
     }
 }

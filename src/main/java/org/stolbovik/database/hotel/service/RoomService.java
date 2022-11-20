@@ -37,8 +37,35 @@ public class RoomService {
         throw new SQLException("В отеле нет комнат\n");
     }
 
-    public Optional<List<Room>> getFreeRooms(@NotNull Date start,
-                                   @NotNull Date end) throws SQLException {
+    public Room getRoomByID(int id) throws SQLException {
+        String query = "select * from Комнаты where ID = " + id;
+        Optional<List<Room>> list = roomsRepository.readRooms(statement, query);
+        if (list.isPresent()) {
+            return list.get().get(0);
+        }
+        throw new SQLException("В отеле нет комнаты с таким номером\n");
+    }
+
+    public Room getRoomByKey(@NotNull String key) throws SQLException {
+        String query = "select * from Комнаты where Ключ = '" + key + "'";
+        Optional<List<Room>> list = roomsRepository.readRooms(statement, query);
+        if (list.isPresent()) {
+            return list.get().get(0);
+        }
+        throw new SQLException("В отеле нет комнаты с таким ключом\n");
+    }
+
+    public Room getRoomByNumber(int number) throws SQLException {
+        String query = "select * from Комнаты where Номер = " + number;
+        Optional<List<Room>> list = roomsRepository.readRooms(statement, query);
+        if (list.isPresent()) {
+            return list.get().get(0);
+        }
+        throw new SQLException("В отеле нет комнаты с таким номером\n");
+    }
+
+    public List<Room> getFreeRooms(@NotNull Date start,
+                                             @NotNull Date end) throws SQLException, IllegalArgumentException {
         String query = "select * from Бронирование";
         List<Room> allRooms = getAllRooms();
         List<Booking> allBookings;
@@ -63,9 +90,9 @@ public class RoomService {
             }
         }
         if (allRooms.isEmpty()) {
-            return Optional.empty();
+            throw new IllegalArgumentException("Нет свободных номеров на эти даты");
         }
-        return Optional.of(allRooms);
+        return allRooms;
     }
 
     public boolean setCleaningStatus(@NotNull Room room, boolean status) throws SQLException {

@@ -19,7 +19,7 @@ public class ClientService {
         this.statement = statement;
     }
 
-    public Client getClientByPassport(@NotNull String passport) throws SQLException {
+    public Client getClientByPassport(@NotNull String passport) throws SQLException, IllegalArgumentException {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
         if (list.isEmpty()) {
@@ -28,10 +28,16 @@ public class ClientService {
         return list.get().get(0);
     }
 
-    public boolean addClient(@NotNull String firstName,
-                             @NotNull String lastName,
-                             @NotNull String fatherName,
-                             @NotNull String passport) throws SQLException {
+    public boolean checkClientByPassport(@NotNull String passport) throws SQLException, IllegalArgumentException {
+        String query = "select * from Клиенты where Паспорт = " + passport;
+        Optional<List<Client>> list = clientRepository.readClients(statement, query);
+        return list.isPresent();
+    }
+
+    public void addClient(@NotNull String firstName,
+                          @NotNull String lastName,
+                          @NotNull String fatherName,
+                          @NotNull String passport) throws SQLException {
         String query =  "insert into Клиенты (ФИО, Паспорт) values ('"
                         + firstName + ' ' + lastName + ' ' + fatherName + "', " +
                         passport + ")";
@@ -39,7 +45,6 @@ public class ClientService {
         if (res != 1) {
             throw new SQLException("Не удалось добавить вас в систему отеля");
         }
-        return true;
     }
 
 }

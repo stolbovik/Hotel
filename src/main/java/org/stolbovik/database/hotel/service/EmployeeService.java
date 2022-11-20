@@ -73,7 +73,16 @@ public class EmployeeService {
         throw new SQLException("Данного сотрудника нет в базе");
     }
 
-    public boolean deleteEmployee(@NotNull Employee employee) throws SQLException {
+    public Employee getEmployeeById(int id) throws SQLException {
+        String query = "select * from Сотрудники where ID = " + id;
+        Optional<List<Employee>> list = employeeRepository.readEmployees(statement, query);
+        if (list.isPresent()) {
+            return list.get().get(0);
+        }
+        throw new SQLException("Сотрудника с данным номером не существует");
+    }
+
+    public void deleteEmployee(@NotNull Employee employee) throws SQLException, IllegalArgumentException {
         if (employee.getStatusOfEmployment()) {
             throw new IllegalArgumentException("Нельзя уволить сотрудника пока он работает");
         }
@@ -97,10 +106,9 @@ public class EmployeeService {
         if (res != 1) {
             throw new SQLException("Не удалось удалить сотрудника");
         }
-        return true;
     }
 
-    public boolean setStatusOfEmployment(@NotNull Employee employee, boolean status) throws SQLException {
+    public void setStatusOfEmployment(@NotNull Employee employee, boolean status) throws SQLException {
         int temp;
         if (status) {
             temp = 1;
@@ -112,7 +120,6 @@ public class EmployeeService {
         if (res != 1) {
             throw new SQLException("Не удалось изменить статус занятости у сотрудника");
         }
-        return true;
     }
 
     public boolean checkEmployeeByEquipment(@NotNull Employee employee) {
@@ -141,7 +148,7 @@ public class EmployeeService {
     }
 
     public boolean increaseOfPrize(@NotNull Employee employee,
-                                   int prize) throws SQLException {
+                                   int prize) throws SQLException, IllegalArgumentException {
         if (prize <= 0) {
             throw new IllegalArgumentException("Необходимо положительное число для прибавки");
         }
@@ -155,7 +162,7 @@ public class EmployeeService {
     }
 
     public boolean decreaseOfPrize(@NotNull Employee employee,
-                                   int prize) throws SQLException {
+                                   int prize) throws SQLException, IllegalArgumentException {
         if (prize <= 0) {
             throw new IllegalArgumentException("Необходимо положительное число для прибавки");
         }

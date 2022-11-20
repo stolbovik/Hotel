@@ -20,13 +20,10 @@ public class ComplaintBookService {
         this.statement = statement;
     }
 
-    public EntryInBook getEntryByClient(@NotNull Client client) throws SQLException {
+    public Optional<EntryInBook> getEntryByClient(@NotNull Client client) throws SQLException, IllegalArgumentException {
         String query = "select * from [Книга жалоб и предложений] where [ID клиента] = " + client.getId();
         Optional<List<EntryInBook>> list = complaintBookRepository.readEntrys(statement, query);
-        if (list.isPresent()) {
-            return list.get().get(0);
-        }
-        throw new IllegalArgumentException("Записей от данного клиента нет");
+        return list.map(entryInBooks -> entryInBooks.get(0));
     }
 
     public boolean addTextToEntry(@NotNull EntryInBook entryInBook,
@@ -40,7 +37,7 @@ public class ComplaintBookService {
         return true;
     }
 
-    public boolean addNewEntry(@NotNull String message,
+    public void addNewEntry(@NotNull String message,
                                @NotNull Client client) throws SQLException {
         String query = "inset into [Книга жалоб и предложений] ([ID клиента], Сообщение, [Ответ администратора]) " +
                 "values (" + client.getId() + ", '" + message + "', ' ')";
@@ -48,7 +45,6 @@ public class ComplaintBookService {
         if (res != 1) {
             throw  new SQLException("Не удалось добавить запись клиента в книгу");
         }
-        return true;
     }
 
     public boolean addAnswerToEntry(@NotNull EntryInBook entryInBook,

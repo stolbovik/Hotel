@@ -1,7 +1,6 @@
 package org.stolbovik.database.hotel.service;
 
 import org.jetbrains.annotations.NotNull;
-import org.stolbovik.database.hotel.models.Employee;
 import org.stolbovik.database.hotel.models.Equipment;
 import org.stolbovik.database.hotel.repository.EquipmentRepository;
 
@@ -21,7 +20,7 @@ public class EquipmentService {
         this.statement = statement;
     }
 
-    public List<Equipment> getFreeEquipmentByName(@NotNull String name) throws SQLException {
+    public List<Equipment> getFreeEquipmentByName(@NotNull String name) throws SQLException, IllegalArgumentException {
         String query = "select * from [Спец.оборудование] where Название = '" + name + "'" +
                 "and [Статус использования] = 0";
         Optional<List<Equipment>> list = equipmentRepository.readEquipments(statement, query);
@@ -29,6 +28,15 @@ public class EquipmentService {
             throw new IllegalArgumentException("Нет свободного оборудования данного типа");
         }
         return list.get();
+    }
+
+    public Equipment getEquipmentById(int id) throws SQLException, IllegalArgumentException {
+        String query = "select * from [Спец.оборудование] where ID = " + id;
+        Optional<List<Equipment>> list = equipmentRepository.readEquipments(statement, query);
+        if (list.isEmpty()){
+            throw new IllegalArgumentException("Нет свободного оборудования данного типа");
+        }
+        return list.get().get(0);
     }
 
     public boolean setStatusOfEmployment(@NotNull Equipment equipment, boolean status) throws SQLException {

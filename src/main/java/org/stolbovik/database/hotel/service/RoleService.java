@@ -19,7 +19,7 @@ public class RoleService {
         this.statement = statement;
     }
 
-    public Role getRoleByName(@NotNull String name) throws SQLException {
+    public Role getRoleByName(@NotNull String name) throws SQLException, IllegalArgumentException {
         String query = "select * from Роли where Роль = '" + name + "'";
         Optional<List<Role>> list = repository.readRole(statement, query);
         if (list.isEmpty()) {

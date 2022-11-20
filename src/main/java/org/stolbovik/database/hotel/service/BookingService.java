@@ -38,11 +38,12 @@ public class BookingService {
         throw new SQLException("Таблица \"Бронирование\" пуста\n");
     }
 
-    public boolean addBooking(  @NotNull Date start,
-                                @NotNull Date end,
-                                @NotNull Client client,
-                                @NotNull Room room,
-                                int paymentState) throws SQLException {
+    public void addBooking(@NotNull Date start,
+                           @NotNull Date end,
+                           @NotNull Client client,
+                           @NotNull Room room,
+                           int paymentState) throws SQLException {
+
         String query =  "insert into Бронирование (Прибывание, Выезд, [Статус заселения]," +
                 " [Статус оплаты], [ID Клиента], [Номер комнаты]) values ('" +
                         HelpFunction.dateToSqlDate(start) + "', '" +
@@ -52,10 +53,9 @@ public class BookingService {
         if (res != 1) {
             throw new SQLException("Не удалось добавить бронь");
         }
-        return true;
     }
 
-    public Booking getTodayStayBookingByPassport(@NotNull String passport) throws SQLException {
+    public Booking getTodayStayBookingByPassport(@NotNull String passport) throws SQLException, IllegalArgumentException {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
         if (list.isEmpty()) {
@@ -71,7 +71,7 @@ public class BookingService {
         return list2.get().get(0);
     }
 
-    public Booking getTodayBookingByPassport(@NotNull String passport) throws SQLException {
+    public Booking getTodayBookingByPassport(@NotNull String passport) throws SQLException, IllegalArgumentException {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
         if (list.isEmpty()) {
@@ -88,7 +88,27 @@ public class BookingService {
         return list2.get().get(0);
     }
 
-    public boolean setPaymentStatus(@NotNull Booking booking, boolean status) throws SQLException {
+    public Booking getTodayBookingByIdOfRoom(int id) throws SQLException, IllegalArgumentException {
+        String query = "select * from Бронирование where [Номер комнаты] = " + id + " AND " +
+                "Прибывание <= '" + HelpFunction.dateToSqlDate(new Date()) +
+                "' AND Выезд >= '" + HelpFunction.dateToSqlDate(new Date()) + "'";
+        Optional<List<Booking>> list2 = bookingRepository.readBookings(statement, query);
+        if (list2.isEmpty()) {
+            throw new IllegalArgumentException("Брони на сегодня на данного клиента нет");
+        }
+        return list2.get().get(0);
+    }
+
+    public Booking getBookingById(int id) throws SQLException, IllegalArgumentException {
+        String query = "select * from Бронирование where ID = " + id;
+        Optional<List<Booking>> list2 = bookingRepository.readBookings(statement, query);
+        if (list2.isEmpty()) {
+            throw new IllegalArgumentException("Брони с данным номером нет");
+        }
+        return list2.get().get(0);
+    }
+
+    public void setPaymentStatus(@NotNull Booking booking, boolean status) throws SQLException {
         int temp;
         if (status) {
             temp = 1;
@@ -100,10 +120,9 @@ public class BookingService {
         if (res != 1) {
             throw new SQLException("Не удалось изменить статус оплаты у данного бронирования");
         }
-        return true;
     }
 
-    public boolean setSettlementStatus(@NotNull Booking booking, boolean status) throws SQLException {
+    public void setSettlementStatus(@NotNull Booking booking, boolean status) throws SQLException {
         int temp;
         if (status) {
             temp = 1;
@@ -115,7 +134,15 @@ public class BookingService {
         if (res != 1) {
             throw new SQLException("Не удалось изменить статус заселения у данного бронирования");
         }
-        return true;
+    }
+
+    public void setDateOfDeparture(@NotNull Booking booking, @NotNull Date newDate) throws SQLException {
+        String query = "update Бронирование set Выезд = '" + HelpFunction.dateToSqlDate(newDate) + "' "
+                + " where ID = " + booking.getId();
+        int res = bookingRepository.updateBooking(statement, query);
+        if (res != 1) {
+            throw new SQLException("Не удалось изменить дату выезда у данного бронирования");
+        }
     }
 
     public boolean changeDateOfDeparture(@NotNull Booking booking,

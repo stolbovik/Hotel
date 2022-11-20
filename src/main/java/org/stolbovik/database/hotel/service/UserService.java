@@ -35,7 +35,7 @@ public class UserService {
 
     public boolean addNewUser(@NotNull String login,
                               @NotNull String password,
-                              @NotNull Role role) throws SQLException {
+                              @NotNull Role role) throws SQLException, IllegalArgumentException {
         if(identification(login).isPresent()) {
             throw new IllegalArgumentException("Данный логин уже занят");
         }

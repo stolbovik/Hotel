@@ -32,7 +32,7 @@ public class RoomsRepository {
     }
 
     public int updateRoom(@NotNull Statement statement,
-                                  @NotNull String query) throws SQLException {
+                          @NotNull String query) throws SQLException {
         return statement.executeUpdate(query);
     }
 

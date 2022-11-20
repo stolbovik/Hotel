@@ -31,9 +31,20 @@ public class RequestForCleaningService {
         return requestForCleaningRepository.readRequestForCleaning(statement, query);
     }
 
+    public RequestForCleaning getRequestById(int id) throws SQLException {
+        String query = "select * from [Заявки на уборку] where ID = " + id;
+        Optional<List<RequestForCleaning>> list = requestForCleaningRepository
+                .readRequestForCleaning(statement, query);
+        if(list.isEmpty()) {
+            throw new IllegalArgumentException("Такой заявки не существует");
+        }
+        return list.get().get(0);
+    }
+
     public boolean addRequest(@NotNull Booking booking,
                               @NotNull Employee employee,
-                              @NotNull StatusOfCleaningRequest statusOfCleaningRequest) throws SQLException {
+                              @NotNull StatusOfCleaningRequest statusOfCleaningRequest)
+                            throws SQLException, IllegalArgumentException {
         String query = "select * from [Статус заявки уборки] where Статус = 'В очереди'";
         StatusOfCleaningRequest statusOfCleaningRequest1 =
                 statusOfCleaningRequestRepository.readStatusOfCleaningRequest(statement, query).get().get(0);
@@ -59,7 +70,7 @@ public class RequestForCleaningService {
         }
     }
 
-    public boolean addRequest(@NotNull Booking booking) throws SQLException {
+    public void addRequest(@NotNull Booking booking) throws SQLException, IllegalArgumentException {
         String query = "select * from [Статус заявки уборки] where Статус = 'В очереди'";
         StatusOfCleaningRequest statusOfCleaningRequest1 =
                 statusOfCleaningRequestRepository.readStatusOfCleaningRequest(statement, query).get().get(0);
@@ -79,11 +90,11 @@ public class RequestForCleaningService {
         if (res != 1) {
             throw new SQLException("Не удалось добавить заявку на бронирование");
         }
-        return true;
     }
 
-    public boolean assignAnEmployee(@NotNull Employee employee,
-                                    @NotNull RequestForCleaning requestForCleaning) throws SQLException {
+    public void assignAnEmployee(@NotNull Employee employee,
+                                 @NotNull RequestForCleaning requestForCleaning)
+                                    throws SQLException, IllegalArgumentException {
         if (requestForCleaning.getIdOfEmployee() != null) {
             throw new IllegalArgumentException("За уборку уже назначен работник");
         }
@@ -96,7 +107,6 @@ public class RequestForCleaningService {
         if (res!= 1) {
             throw new SQLException("Не удалось назначить сотрудника на уборку");
         }
-        return true;
     }
 
     public boolean setStatusOfRequest(@NotNull RequestForCleaning requestForCleaning,
