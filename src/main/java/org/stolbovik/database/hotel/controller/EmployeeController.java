@@ -38,9 +38,10 @@ public class EmployeeController {
     }
 
     public void fireAnEmployee(@NotNull String passport) throws SQLException, IllegalArgumentException {
+        HelpFunction.checkPassport(passport);
         Employee employee = employeeService.getEmployeeByPassport(passport);
-        employeeService.deleteEmployee(employee);
         Post post = postService.getPostById(employee.getIdOFPost());
+        employeeService.deleteEmployee(employee);
         postService.incrementCountOfRequiredEmployees(post);
     }
 

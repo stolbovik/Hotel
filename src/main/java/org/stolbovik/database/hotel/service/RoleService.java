@@ -28,4 +28,13 @@ public class RoleService {
         return list.get().get(0);
     }
 
+    public Role getRoleById(int id) throws SQLException, IllegalArgumentException {
+        String query = "select * from Роли where ID = '" + id + "'";
+        Optional<List<Role>> list = repository.readRole(statement, query);
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Роли с таким id нет");
+        }
+        return list.get().get(0);
+    }
+
 }

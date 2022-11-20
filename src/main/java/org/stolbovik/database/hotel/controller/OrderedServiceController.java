@@ -10,6 +10,7 @@ import org.stolbovik.database.hotel.service.PaidServiceService;
 import org.stolbovik.database.hotel.service.ServiceWithEmployeeService;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
+import java.net.http.HttpRequest;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class OrderedServiceController {
                                 @NotNull String passport,
                                 @NotNull Date date) throws SQLException, IllegalArgumentException {
         HelpFunction.checkDate(date);
+        HelpFunction.checkPassport(passport);
         Booking booking = bookingService.getTodayBookingByPassport(passport);
         if (date.compareTo(booking.getDateOfDeparture()) > 0) {
             throw new IllegalArgumentException("Закзать услугу можно только на время бронирования номера");

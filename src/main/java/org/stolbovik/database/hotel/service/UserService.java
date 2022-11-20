@@ -24,19 +24,19 @@ public class UserService {
         this.statement = statement;
     }
 
-    public Optional<User> identification(@NotNull String login) throws SQLException {
+    public User identification(@NotNull String login) throws SQLException {
         String query = "select * from Пользователи where Логин = '" + login + "'";
         Optional<List<User>> list = userRepository.readUser(statement, query);
         if (list.isEmpty()) {
-            return Optional.empty();
+            throw new IllegalArgumentException("Такого пользователя не существует");
         }
-        return Optional.of(list.get().get(0));
+        return list.get().get(0);
     }
 
     public boolean addNewUser(@NotNull String login,
                               @NotNull String password,
                               @NotNull Role role) throws SQLException, IllegalArgumentException {
-        if(identification(login).isPresent()) {
+        if(identification(login) != null) {
             throw new IllegalArgumentException("Данный логин уже занят");
         }
         String encodePassword = encoder.encodeToString(password.getBytes());
@@ -49,8 +49,10 @@ public class UserService {
         return true;
     }
 
-    public boolean authentication(@NotNull User user,
+    public void authentication(@NotNull User user,
                                   @NotNull String password) {
-        return password.equals(new String(decoder.decode(user.getPassword())));
+        if (!password.equals(new String(decoder.decode(user.getPassword())))) {
+            throw new IllegalArgumentException("Неверный пароль");
+        };
     }
 }

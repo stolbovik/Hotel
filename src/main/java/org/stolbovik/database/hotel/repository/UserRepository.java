@@ -22,7 +22,7 @@ public class UserRepository {
         do {
             User user = new User();
             user.setId(resultSet.getInt("id"));
-            user.setRole(resultSet.getString("Роль"));
+            user.setRole(resultSet.getInt("Роль"));
             user.setLogin(resultSet.getString("Логин"));
             user.setPassword(resultSet.getString("Пароль"));
             users.add(user);

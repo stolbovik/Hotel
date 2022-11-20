@@ -48,6 +48,7 @@ public class BookingController {
     }
 
     public String checkIntoTheBookedRoom(@NotNull String passport) throws SQLException, IllegalArgumentException {
+        HelpFunction.checkPassport(passport);
         Booking booking = bookingService.getTodayStayBookingByPassport(passport);
         bookingService.setSettlementStatus(booking, true);
         Room room = roomService.getRoomByID(booking.getIdOfRoom());
