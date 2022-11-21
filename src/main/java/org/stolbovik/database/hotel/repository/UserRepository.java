@@ -2,6 +2,7 @@ package org.stolbovik.database.hotel.repository;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.User;
+import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +13,8 @@ import java.util.Optional;
 
 public class UserRepository {
 
-    public Optional<List<User>> readUser(@NotNull Statement statement,
-                                         @NotNull String query) throws SQLException {
-        ResultSet resultSet = statement.executeQuery(query);
+    public Optional<List<User>> readUser(@NotNull String query) throws SQLException {
+        ResultSet resultSet = Constatns.statement.executeQuery(query);
         if (!resultSet.next()) {
             return Optional.empty();
         }
@@ -30,9 +30,8 @@ public class UserRepository {
         return Optional.of(users);
     }
 
-    public int updateUser(@NotNull Statement statement,
-                          @NotNull String query) throws SQLException {
-        return statement.executeUpdate(query);
+    public int updateUser(@NotNull String query) throws SQLException {
+        return Constatns.statement.executeUpdate(query);
     }
 
 }

@@ -4,7 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Role;
 import org.stolbovik.database.hotel.models.User;
 import org.stolbovik.database.hotel.repository.UserRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 
+import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
@@ -14,19 +16,17 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final Statement statement;
 
     private static final Base64.Decoder decoder = Base64.getDecoder();
     private static final Base64.Encoder encoder = Base64.getEncoder();
 
-    public  UserService(@NotNull Statement statement) {
+    public  UserService() {
         this.userRepository = new UserRepository();
-        this.statement = statement;
     }
 
     public User identification(@NotNull String login) throws SQLException {
         String query = "select * from Пользователи where Логин = '" + login + "'";
-        Optional<List<User>> list = userRepository.readUser(statement, query);
+        Optional<List<User>> list = userRepository.readUser(query);
         if (list.isEmpty()) {
             throw new IllegalArgumentException("Такого пользователя не существует");
         }
@@ -42,7 +42,7 @@ public class UserService {
         String encodePassword = encoder.encodeToString(password.getBytes());
         String query = "insert into Пользователи (Логин, Пароль, Роль) values " +
                 "('" + login + "', '" + encodePassword + "', " + role.getId() + ")";
-        int res = userRepository.updateUser(statement, query);
+        int res = userRepository.updateUser(query);
         if (res != 1) {
             throw new SQLException("Не удалось добавить нового пользователя");
         }
