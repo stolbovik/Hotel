@@ -50,7 +50,8 @@ public class UserService {
     }
 
     public void authentication(@NotNull User user,
-                                  @NotNull String password) {
+                               @NotNull String password) {
+        System.out.println(user.getPassword());
         if (!password.equals(new String(decoder.decode(user.getPassword())))) {
             throw new IllegalArgumentException("Неверный пароль");
         };

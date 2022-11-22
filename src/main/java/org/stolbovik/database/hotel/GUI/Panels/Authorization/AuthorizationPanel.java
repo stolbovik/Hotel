@@ -1,12 +1,12 @@
-package org.stolbovik.database.hotel.GUI.Panels;
+package org.stolbovik.database.hotel.GUI.Panels.Authorization;
 
 import org.jetbrains.annotations.NotNull;
-import org.stolbovik.database.hotel.GUI.Listeners.LoggingButtonActionListeners;
+import org.stolbovik.database.hotel.GUI.Listeners.AuthorizationListeners.LoggingButtonActionListener;
+import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Statement;
 
 public class AuthorizationPanel extends JPanel {
 
@@ -16,10 +16,12 @@ public class AuthorizationPanel extends JPanel {
     private final JTextField login = new JTextField(20);
     private final JPasswordField password = new JPasswordField(20);
     private final JButton logging = new JButton("Войти");
-    private final JLabel info = (new JLabel("Информация об ошибках"));
+    private final JLabel info = (new JLabel(" "));
+    private final MainFrame mainFrame;
 
-    public AuthorizationPanel() {
+    public AuthorizationPanel(@NotNull MainFrame mainFrame) {
         super();
+        this.mainFrame = mainFrame;
         setBaseParameter();
         setComponentOnFrame();
     }
@@ -32,7 +34,6 @@ public class AuthorizationPanel extends JPanel {
     private void setComponentOnFrame() {
         JPanel titlePanel = new JPanel();
         titlePanel.add(title);
-        /*title.setFont(new Font());*/
         JPanel loginTitlePanel = new JPanel();
         loginTitlePanel.add(loginTitle);
         JPanel passwordTitlePanel = new JPanel();
@@ -42,7 +43,7 @@ public class AuthorizationPanel extends JPanel {
         JPanel passwordPanel = new JPanel();
         passwordPanel.add(password);
         JPanel loggingPanel = new JPanel();
-        logging.addActionListener(new LoggingButtonActionListeners(login, password, info));
+        logging.addActionListener(new LoggingButtonActionListener(login, password, info, mainFrame));
         loggingPanel.add(logging);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);
@@ -62,5 +63,8 @@ public class AuthorizationPanel extends JPanel {
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
     }
 
+    public void setInfoLabel(String text) {
+        info.setText(text);
+    }
 
 }

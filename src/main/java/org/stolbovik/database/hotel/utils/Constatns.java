@@ -19,4 +19,5 @@ public final class Constatns {
     public static final int MILLISECOND_IN_DAY = 86400000;
     public static final int WINDOW_WIDTH = 600;
     public static final int WINDOW_HEIGHT = 400;
+    public static boolean applicationIsWork = true;
 }
