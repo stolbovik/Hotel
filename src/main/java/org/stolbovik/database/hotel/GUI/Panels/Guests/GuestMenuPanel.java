@@ -1,7 +1,11 @@
 package org.stolbovik.database.hotel.GUI.Panels.Guests;
 
 import org.jetbrains.annotations.NotNull;
-import org.stolbovik.database.hotel.GUI.Listeners.BackListeners.BackToLoggingListener;
+import org.stolbovik.database.hotel.GUI.Listeners.BackToLoggingListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToBookRoomListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToCheckIntoRoomListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToCheckOutRoomListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToExtendToomListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -32,12 +36,16 @@ public class GuestMenuPanel extends JPanel {
 
     private void setComponentOnFrame() {
         JPanel bronePanel = new JPanel();
+        brone.addActionListener(new ToBookRoomListener(mainFrame));
         bronePanel.add(brone);
         JPanel checkIntoPanel = new JPanel();
+        checkInto.addActionListener(new ToCheckIntoRoomListener(mainFrame));
         checkIntoPanel.add(checkInto);
         JPanel moveOutPanel = new JPanel();
+        moveOut.addActionListener(new ToCheckOutRoomListener(mainFrame));
         moveOutPanel.add(moveOut);
         JPanel extendPanel = new JPanel();
+        extend.addActionListener(new ToExtendToomListener(mainFrame));
         extendPanel.add(extend);
         JPanel newServicePanel = new JPanel();
         newServicePanel.add(newService);
@@ -57,5 +65,6 @@ public class GuestMenuPanel extends JPanel {
         add(backPanel, new GridBagConstraints(0, 5, 1, 1, 1, 1, GridBagConstraints.CENTER,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
     }
+
 
 }

@@ -1,7 +1,8 @@
 package org.stolbovik.database.hotel.GUI.Panels.Admins;
 
 import org.jetbrains.annotations.NotNull;
-import org.stolbovik.database.hotel.GUI.Listeners.BackListeners.BackToLoggingListener;
+import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.*;
+import org.stolbovik.database.hotel.GUI.Listeners.BackToLoggingListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -31,12 +32,16 @@ public class AdminMenuPanel extends JPanel {
 
     private void setComponentOnFrame() {
         JPanel acceptPanel = new JPanel();
+        accept.addActionListener(new ToAcceptComplaintListener(mainFrame));
         acceptPanel.add(accept);
         JPanel checkInPanel = new JPanel();
+        checkIn.addActionListener(new ToCheckInGuestListener(mainFrame));
         checkInPanel.add(checkIn);
         JPanel newEmployeePanel = new JPanel();
+        newEmployee.addActionListener(new ToAcceptEmployeeListener(mainFrame));
         newEmployeePanel.add(newEmployee);
         JPanel firePanel = new JPanel();
+        fire.addActionListener(new ToFireEmployeeListener(mainFrame));
         firePanel.add(fire);
         JPanel backPanel = new JPanel();
         back.addActionListener(new BackToLoggingListener(mainFrame));

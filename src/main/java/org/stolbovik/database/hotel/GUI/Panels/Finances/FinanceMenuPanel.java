@@ -1,7 +1,10 @@
 package org.stolbovik.database.hotel.GUI.Panels.Finances;
 
 import org.jetbrains.annotations.NotNull;
-import org.stolbovik.database.hotel.GUI.Listeners.BackListeners.BackToLoggingListener;
+import org.stolbovik.database.hotel.GUI.Listeners.BackToLoggingListener;
+import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.ToCalculateProfitListener;
+import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.ToCalculateSalariesListener;
+import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.ToChangePrizeListeneer;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -30,10 +33,13 @@ public class FinanceMenuPanel extends JPanel {
 
     private void setComponentOnFrame() {
         JPanel salaryPanel = new JPanel();
+        salary.addActionListener(new ToCalculateSalariesListener(mainFrame));
         salaryPanel.add(salary);
         JPanel roomsPanel = new JPanel();
+        rooms.addActionListener(new ToCalculateProfitListener(mainFrame));
         roomsPanel.add(rooms);
         JPanel prizePanel = new JPanel();
+        prize.addActionListener(new ToChangePrizeListeneer(mainFrame));
         prizePanel.add(prize);
         JPanel backPanel = new JPanel();
         back.addActionListener(new BackToLoggingListener(mainFrame));
