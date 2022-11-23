@@ -25,7 +25,7 @@ public class RequestForCleaningController {
         this.statusOfCleaningRequestService = new StatusOfCleaningRequestService(statement);
         this.bookingService = new BookingService(statement);
         this.roomService = new RoomService(statement);
-        this.equipmentService = new EquipmentService(statement);
+        this.equipmentService = new EquipmentService();
     }
 
     public void assignEmployeeToRequest(int id) throws SQLException, IllegalArgumentException {

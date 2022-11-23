@@ -2,10 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Guests;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.BackToLoggingListener;
-import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToBookRoomListener;
-import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToCheckIntoRoomListener;
-import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToCheckOutRoomListener;
-import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ToExtendToomListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.*;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -48,6 +45,7 @@ public class GuestMenuPanel extends JPanel {
         extend.addActionListener(new ToExtendToomListener(mainFrame));
         extendPanel.add(extend);
         JPanel newServicePanel = new JPanel();
+        newService.addActionListener(new ToNewServiceListener(mainFrame));
         newServicePanel.add(newService);
         JPanel backPanel = new JPanel();
         back.addActionListener(new BackToLoggingListener(mainFrame));

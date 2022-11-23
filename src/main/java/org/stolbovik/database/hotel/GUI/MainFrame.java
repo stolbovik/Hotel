@@ -3,10 +3,7 @@ package org.stolbovik.database.hotel.GUI;
 import org.stolbovik.database.hotel.GUI.Listeners.ClosedFrameListener;
 import org.stolbovik.database.hotel.GUI.Panels.Admins.*;
 import org.stolbovik.database.hotel.GUI.Panels.Authorization.AuthorizationPanel;
-import org.stolbovik.database.hotel.GUI.Panels.Cleanings.AssignEmployeePanel;
-import org.stolbovik.database.hotel.GUI.Panels.Cleanings.CleaningManagerMenuPanel;
-import org.stolbovik.database.hotel.GUI.Panels.Cleanings.EndRequestPanel;
-import org.stolbovik.database.hotel.GUI.Panels.Cleanings.FreeEquipmentPanel;
+import org.stolbovik.database.hotel.GUI.Panels.Cleanings.*;
 import org.stolbovik.database.hotel.GUI.Panels.Finances.CalculateProfitPanel;
 import org.stolbovik.database.hotel.GUI.Panels.Finances.CalculateSalariesPanel;
 import org.stolbovik.database.hotel.GUI.Panels.Finances.ChangePrizePanel;
@@ -37,6 +34,8 @@ public class MainFrame extends JFrame {
     private final CalculateSalariesPanel calculateSalariesPanel = new CalculateSalariesPanel(this);
     private final CalculateProfitPanel calculateProfitPanel = new CalculateProfitPanel(this);
     private final ChangePrizePanel changePrizePanel = new ChangePrizePanel(this);
+    private final NewServicePanel newServicePanel = new NewServicePanel(this);
+    private final NewEquipmentToEmployeePanel newEquipmentToEmployeePanel = new NewEquipmentToEmployeePanel(this);
 
     public MainFrame() {
         super();
@@ -71,6 +70,8 @@ public class MainFrame extends JFrame {
         add(calculateSalariesPanel);
         add(calculateProfitPanel);
         add(changePrizePanel);
+        add(newServicePanel);
+        add(newEquipmentToEmployeePanel);
     }
 
     public void setAuthorization(){
@@ -92,6 +93,8 @@ public class MainFrame extends JFrame {
         calculateSalariesPanel.setVisible(false);
         calculateProfitPanel.setVisible(false);
         changePrizePanel.setVisible(false);
+        newServicePanel.setVisible(false);
+        newEquipmentToEmployeePanel.setVisible(false);
         authorizationPanel.setVisible(true);
         authorizationPanel.setInfoLabel("");
         pack();
@@ -102,6 +105,7 @@ public class MainFrame extends JFrame {
         checkIntoRoomPanel.setVisible(false);
         checkOutRoomPanel.setVisible(false);
         extendRoomPanel.setVisible(false);
+        newServicePanel.setVisible(false);
         guestMenuPanel.setVisible(true);
     }
 
@@ -119,6 +123,7 @@ public class MainFrame extends JFrame {
         assignEmployeePanel.setVisible(false);
         endRequestPanel.setVisible(false);
         freeEquipmentPanel.setVisible(false);
+        newEquipmentToEmployeePanel.setVisible(false);
         cleaningManagerMenuPanel.setVisible(true);
     }
 
@@ -212,6 +217,18 @@ public class MainFrame extends JFrame {
         financeMenuPanel.setVisible(false);
         changePrizePanel.setVisible(true);
         changePrizePanel.setInfoLabel("");
+    }
+
+    public void setNewServicePanel() {
+        guestMenuPanel.setVisible(false);
+        newServicePanel.setVisible(true);
+        newServicePanel.setInfoLabel("");
+    }
+
+    public void setNewEquipmentToEmployeePanel() {
+        cleaningManagerMenuPanel.setVisible(false);
+        newEquipmentToEmployeePanel.setVisible(true);
+        newEquipmentToEmployeePanel.setInfoLabel("");
     }
 
 }

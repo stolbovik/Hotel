@@ -6,7 +6,6 @@ import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,7 @@ import java.util.Optional;
 public class RoleRepository {
 
     public Optional<List<Role>> readRole(@NotNull String query) throws SQLException {
-        ResultSet resultSet = Constatns.statement.executeQuery(query);
+        ResultSet resultSet = Constatns.STATEMENT.executeQuery(query);
         if (!resultSet.next()) {
             return Optional.empty();
         }
@@ -29,7 +28,7 @@ public class RoleRepository {
     }
 
     public int updateRole(@NotNull String query) throws SQLException {
-        return Constatns.statement.executeUpdate(query);
+        return Constatns.STATEMENT.executeUpdate(query);
     }
 
 }

@@ -5,6 +5,7 @@ import org.stolbovik.database.hotel.GUI.Listeners.BackToLoggingListener;
 import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.ToAssignEmployeeListener;
 import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.ToEndRequestListener;
 import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.ToFreeEquipmentListener;
+import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.ToNewEquipmentToEmplyeeListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -40,6 +41,7 @@ public class CleaningManagerMenuPanel extends JPanel {
         endRequest.addActionListener(new ToEndRequestListener(mainFrame));
         endRequestPanel.add(endRequest);
         JPanel equipmentOnEmployeePanel = new JPanel();
+        equipmentOnEmployee.addActionListener(new ToNewEquipmentToEmplyeeListener(mainFrame));
         equipmentOnEmployeePanel.add(equipmentOnEmployee);
         JPanel deleteEquipmentOnEmployeePanel = new JPanel();
         deleteEquipmentOnEmployee.addActionListener(new ToFreeEquipmentListener(mainFrame));

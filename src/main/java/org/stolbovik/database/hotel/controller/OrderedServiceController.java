@@ -24,7 +24,7 @@ public class OrderedServiceController {
 
     private OrderedServiceController(@NotNull Statement statement) {
         this.orderedServiceService = new OrderedServiceService(statement);
-        this.paidServiceService = new PaidServiceService(statement);
+        this.paidServiceService = new PaidServiceService();
         this.bookingService = new BookingService(statement);
         this.serviceWithEmployeeService = new ServiceWithEmployeeService(statement);
     }

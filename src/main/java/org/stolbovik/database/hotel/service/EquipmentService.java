@@ -3,6 +3,7 @@ package org.stolbovik.database.hotel.service;
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Equipment;
 import org.stolbovik.database.hotel.repository.EquipmentRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,12 +13,11 @@ import java.util.Optional;
 public class EquipmentService {
 
     private final EquipmentRepository equipmentRepository;
-    private final Statement statement;
+    private final Statement statement = Constatns.STATEMENT;
 
 
-    public EquipmentService(@NotNull Statement statement) {
+    public EquipmentService() {
         this.equipmentRepository = new EquipmentRepository();
-        this.statement = statement;
     }
 
     public List<Equipment> getFreeEquipmentByName(@NotNull String name) throws SQLException, IllegalArgumentException {
@@ -26,6 +26,15 @@ public class EquipmentService {
         Optional<List<Equipment>> list = equipmentRepository.readEquipments(statement, query);
         if (list.isEmpty()){
             throw new IllegalArgumentException("Нет свободного оборудования данного типа");
+        }
+        return list.get();
+    }
+
+    public List<Equipment> getFreeEquipment() throws SQLException, IllegalArgumentException {
+        String query = "select * from [Спец.оборудование] where [Статус использования] = 0";
+        Optional<List<Equipment>> list = equipmentRepository.readEquipments(statement, query);
+        if (list.isEmpty()){
+            throw new IllegalArgumentException("Нет свободного оборудования");
         }
         return list.get();
     }
