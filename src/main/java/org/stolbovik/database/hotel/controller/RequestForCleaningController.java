@@ -18,20 +18,20 @@ public class RequestForCleaningController {
     private final RoomService roomService;
     private final EquipmentService equipmentService;
 
-    public RequestForCleaningController(@NotNull Statement statement) {
-        this.requestForCleaningService = new RequestForCleaningService(statement);
-        this.employeeService = new EmployeeService(statement);
-        this.postService = new PostService(statement);
-        this.statusOfCleaningRequestService = new StatusOfCleaningRequestService(statement);
-        this.bookingService = new BookingService(statement);
-        this.roomService = new RoomService(statement);
+    public RequestForCleaningController() {
+        this.requestForCleaningService = new RequestForCleaningService();
+        this.employeeService = new EmployeeService();
+        this.postService = new PostService();
+        this.statusOfCleaningRequestService = new StatusOfCleaningRequestService();
+        this.bookingService = new BookingService();
+        this.roomService = new RoomService();
         this.equipmentService = new EquipmentService();
     }
 
     public void assignEmployeeToRequest(int id) throws SQLException, IllegalArgumentException {
         RequestForCleaning requestForCleaning = requestForCleaningService.getRequestById(id);
         if (requestForCleaning.getIdOfStatusRequest() == 2) {
-            throw new IllegalArgumentException("Заявка выполняется");
+            throw new IllegalArgumentException("Заявка уже выполняется");
         }
         if (requestForCleaning.getIdOfStatusRequest() == 3) {
             throw new IllegalArgumentException("Заявка уже выполнена");
@@ -47,34 +47,11 @@ public class RequestForCleaningController {
         StatusOfCleaningRequest statusOfCleaningRequest =
                 statusOfCleaningRequestService.getStatusOfCleaningRequestsByName("Выполнена");
         requestForCleaningService.setStatusOfRequest(requestForCleaning, statusOfCleaningRequest);
-        Booking booking = bookingService.getBookingById(requestForCleaning.getId());
+        Booking booking = bookingService.getBookingById(requestForCleaning.getIdOfBooking());
         Room room = roomService.getRoomByID(booking.getIdOfRoom());
         Employee employee = employeeService.getEmployeeById(requestForCleaning.getIdOfEmployee());
         roomService.setCleaningStatus(room, true);
         employeeService.setStatusOfEmployment(employee, false);
-    }
-
-    public void assignEquipmentToEmployee(@NotNull String equipment,
-                                          @NotNull String passport) throws SQLException, IllegalArgumentException {
-        HelpFunction.checkPassport(passport);
-        Employee employee = employeeService.getEmployeeByPassport(passport);
-        if (employee.getIdOfEquipment() != null) {
-            throw new IllegalArgumentException("Сотрудник уже владеет спец.оборудованием");
-        }
-        Equipment equipment1 = equipmentService.getFreeEquipmentByName(equipment).get(0);
-        employeeService.setEquipment(employee, equipment1);
-        equipmentService.setStatusOfEmployment(equipment1, true);
-    }
-
-    public void releaseEmployeeFromEquipment(@NotNull String passport) throws SQLException, IllegalArgumentException {
-        HelpFunction.checkPassport(passport);
-        Employee employee = employeeService.getEmployeeByPassport(passport);
-        if (employee.getIdOfEquipment() == null) {
-            throw new IllegalArgumentException("Сотрудник не владеет спец.оборудованием");
-        }
-        Equipment equipment = equipmentService.getEquipmentById(employee.getIdOfEquipment());
-        employeeService.deleteEquipment(employee);
-        equipmentService.setStatusOfEmployment(equipment, false);
     }
 
 }

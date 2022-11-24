@@ -2,6 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Cleanings;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.BackToAdminMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.AssignEmployeeToRequestListener;
 import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.BackToCleaningMenuListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
@@ -36,6 +37,7 @@ public class AssignEmployeePanel extends JPanel {
         JPanel requestFieldPanel = new JPanel();
         requestFieldPanel.add(requestField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new AssignEmployeeToRequestListener(requestField, info));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

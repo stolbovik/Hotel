@@ -22,11 +22,11 @@ public class OrderedServiceController {
     private final BookingService bookingService;
     private final ServiceWithEmployeeService serviceWithEmployeeService;
 
-    private OrderedServiceController(@NotNull Statement statement) {
-        this.orderedServiceService = new OrderedServiceService(statement);
+    private OrderedServiceController() {
+        this.orderedServiceService = new OrderedServiceService();
         this.paidServiceService = new PaidServiceService();
-        this.bookingService = new BookingService(statement);
-        this.serviceWithEmployeeService = new ServiceWithEmployeeService(statement);
+        this.bookingService = new BookingService();
+        this.serviceWithEmployeeService = new ServiceWithEmployeeService();
     }
 
     public int orderPaidService(@NotNull String name,

@@ -1,11 +1,9 @@
 package org.stolbovik.database.hotel.controller;
 
-import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Equipment;
 import org.stolbovik.database.hotel.service.EquipmentService;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 

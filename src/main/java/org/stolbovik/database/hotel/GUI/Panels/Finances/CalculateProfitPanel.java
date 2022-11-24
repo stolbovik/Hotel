@@ -2,6 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Finances;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.BackToFinanceMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.CalculateProfitFromBookingListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -41,6 +42,7 @@ public class CalculateProfitPanel extends JPanel {
         JPanel dataEndFieldPanel = new JPanel();
         dataEndFieldPanel.add(dataEndField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new CalculateProfitFromBookingListener(info, dataStartField, dataEndField));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

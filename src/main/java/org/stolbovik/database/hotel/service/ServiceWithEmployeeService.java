@@ -8,6 +8,7 @@ import org.stolbovik.database.hotel.models.ServiceWithEmployee;
 import org.stolbovik.database.hotel.repository.EmployeeRepository;
 import org.stolbovik.database.hotel.repository.OrderedServiceRepository;
 import org.stolbovik.database.hotel.repository.ServiceWithEmployeeRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
@@ -23,11 +24,11 @@ public class ServiceWithEmployeeService {
     private final OrderedServiceRepository orderedServiceRepository;
     private final Statement statement;
 
-    public ServiceWithEmployeeService(@NotNull Statement statement) {
+    public ServiceWithEmployeeService() {
         this.serviceWithEmployeeRepository = new ServiceWithEmployeeRepository();
         this.employeeRepository = new EmployeeRepository();
         this.orderedServiceRepository = new OrderedServiceRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public ServiceWithEmployee getServiceWithFreeEmployeeNow(@NotNull PaidService paidService) throws SQLException {

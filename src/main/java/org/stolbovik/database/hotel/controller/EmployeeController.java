@@ -2,23 +2,27 @@ package org.stolbovik.database.hotel.controller;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Employee;
+import org.stolbovik.database.hotel.models.Equipment;
 import org.stolbovik.database.hotel.models.Post;
 import org.stolbovik.database.hotel.service.EmployeeService;
+import org.stolbovik.database.hotel.service.EquipmentService;
 import org.stolbovik.database.hotel.service.PostService;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
+import java.util.List;
 
 public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final PostService postService;
+    private final EquipmentService equipmentService;
 
-    public EmployeeController(@NotNull Statement statement) {
-        this.employeeService = new EmployeeService(statement);
-        this.postService = new PostService(statement);
+    public EmployeeController() {
+        this.employeeService = new EmployeeService();
+        this.postService = new PostService();
+        this.equipmentService = new EquipmentService();
     }
 
     public void hireNewEmployee(@NotNull String passport, @NotNull String firstName, @NotNull String lastName,
@@ -29,6 +33,12 @@ public class EmployeeController {
         HelpFunction.checkName(firstName);
         HelpFunction.checkName(lastName);
         HelpFunction.checkPassport(passport);
+        List<Employee> list = employeeService.getEmployees();
+        for (Employee employee: list) {
+            if(employee.getPassport() == Long.parseLong(passport)) {
+                throw new IllegalArgumentException("Сотрудник с такими паспортными данными уже есть");
+            }
+        }
         Post post1 = postService.getPostByName(post);
         if (post1.getCountOfRequiredEmployees() == 0) {
             throw new IllegalArgumentException("Нам сейчас не нужны работники на данную должность");
@@ -54,7 +64,7 @@ public class EmployeeController {
     public void changePrize(@NotNull String passport,
                             int prize,
                             @NotNull String options) throws SQLException, IllegalArgumentException {
-        if (options.equalsIgnoreCase("поднять")) {
+        if (options.equalsIgnoreCase("повысить")) {
             raisePrize(passport, prize);
         } else if (options.equalsIgnoreCase("понизить")) {
             reducePrize(passport, prize);
@@ -76,6 +86,29 @@ public class EmployeeController {
         HelpFunction.checkPassport(passport);
         Employee employee = employeeService.getEmployeeByPassport(passport);
         employeeService.decreaseOfPrize(employee, prize);
+    }
+
+    public void assignEquipmentToEmployee(@NotNull String equipment,
+                                          @NotNull String passport) throws SQLException, IllegalArgumentException {
+        HelpFunction.checkPassport(passport);
+        Employee employee = employeeService.getEmployeeByPassport(passport);
+        if (employee.getIdOfEquipment() != 0) {
+            throw new IllegalArgumentException("Сотрудник владеет оборудованием");
+        }
+        Equipment equipment1 = equipmentService.getFreeEquipmentByName(equipment).get(0);
+        employeeService.setEquipment(employee, equipment1);
+        equipmentService.setStatusOfEmployment(equipment1, true);
+    }
+
+    public void releaseEmployeeFromEquipment(@NotNull String passport) throws SQLException, IllegalArgumentException {
+        HelpFunction.checkPassport(passport);
+        Employee employee = employeeService.getEmployeeByPassport(passport);
+        if (employee.getIdOfEquipment() == 0) {
+            throw new IllegalArgumentException("Сотрудник не владеет спец.оборудованием");
+        }
+        Equipment equipment = equipmentService.getEquipmentById(employee.getIdOfEquipment());
+        employeeService.deleteEquipment(employee);
+        equipmentService.setStatusOfEmployment(equipment, false);
     }
 
 }

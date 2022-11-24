@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.*;
 import org.stolbovik.database.hotel.repository.RequestForCleaningRepository;
 import org.stolbovik.database.hotel.repository.StatusOfCleaningRequestRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
@@ -18,10 +19,10 @@ public class RequestForCleaningService {
     private final StatusOfCleaningRequestRepository statusOfCleaningRequestRepository;
     private final Statement statement;
 
-    public RequestForCleaningService(@NotNull Statement statement) {
+    public RequestForCleaningService() {
         this.requestForCleaningRepository = new RequestForCleaningRepository();
         this.statusOfCleaningRequestRepository = new StatusOfCleaningRequestRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public Optional<List<RequestForCleaning>> checkRequestForBookingAndStatus(@NotNull Booking booking,
@@ -95,7 +96,7 @@ public class RequestForCleaningService {
     public void assignAnEmployee(@NotNull Employee employee,
                                  @NotNull RequestForCleaning requestForCleaning)
                                     throws SQLException, IllegalArgumentException {
-        if (requestForCleaning.getIdOfEmployee() != null) {
+        if (requestForCleaning.getIdOfEmployee() != 0) {
             throw new IllegalArgumentException("За уборку уже назначен работник");
         }
         if (employee.getStatusOfEmployment()) {

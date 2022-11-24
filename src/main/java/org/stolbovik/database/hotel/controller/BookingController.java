@@ -23,17 +23,17 @@ public class BookingController {
     private final ClientService clientService;
     private final RequestForCleaningService requestForCleaningService;
 
-    public BookingController(@NotNull Statement statement) {
-        this.bookingService = new BookingService(statement);
-        this.roomService = new RoomService(statement);
-        this.clientService = new ClientService(statement);
-        this.requestForCleaningService = new RequestForCleaningService(statement);
+    public BookingController() {
+        this.bookingService = new BookingService();
+        this.roomService = new RoomService();
+        this.clientService = new ClientService();
+        this.requestForCleaningService = new RequestForCleaningService();
     }
 
     public int bookRoom(@NotNull String passport, @NotNull String firstName, @NotNull String lastName,
                         @NotNull String fatherName, @NotNull Date start, @NotNull Date end)
                         throws SQLException, IllegalArgumentException {
-        HelpFunction.checkDates(start, end);
+        HelpFunction.checkDatesWithNow(start, end);
         HelpFunction.checkName(firstName);
         HelpFunction.checkName(lastName);
         HelpFunction.checkName(fatherName);

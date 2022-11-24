@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Client;
 import org.stolbovik.database.hotel.models.EntryInBook;
 import org.stolbovik.database.hotel.repository.ComplaintBookRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,9 +16,9 @@ public class ComplaintBookService {
     private final ComplaintBookRepository complaintBookRepository;
     private final Statement statement;
 
-    public ComplaintBookService(@NotNull Statement statement){
+    public ComplaintBookService(){
         this.complaintBookRepository = new ComplaintBookRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public Optional<EntryInBook> getEntryByClient(@NotNull Client client) throws SQLException, IllegalArgumentException {
@@ -39,7 +40,7 @@ public class ComplaintBookService {
 
     public void addNewEntry(@NotNull String message,
                                @NotNull Client client) throws SQLException {
-        String query = "inset into [Книга жалоб и предложений] ([ID клиента], Сообщение, [Ответ администратора]) " +
+        String query = "insert into [Книга жалоб и предложений] ([ID клиента], Сообщение, [Ответ администратора]) " +
                 "values (" + client.getId() + ", '" + message + "', ' ')";
         int res = complaintBookRepository.updateComplaintBook(statement, query);
         if (res != 1) {

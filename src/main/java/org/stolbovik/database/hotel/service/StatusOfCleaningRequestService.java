@@ -3,6 +3,7 @@ package org.stolbovik.database.hotel.service;
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.StatusOfCleaningRequest;
 import org.stolbovik.database.hotel.repository.StatusOfCleaningRequestRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,9 +15,9 @@ public class StatusOfCleaningRequestService {
     private final StatusOfCleaningRequestRepository statusOfCleaningRequestRepository;
     private final Statement statement;
 
-    public StatusOfCleaningRequestService(@NotNull Statement statement) {
+    public StatusOfCleaningRequestService() {
         this.statusOfCleaningRequestRepository = new StatusOfCleaningRequestRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public List<StatusOfCleaningRequest> getStatusOfCleaningRequests() throws SQLException {

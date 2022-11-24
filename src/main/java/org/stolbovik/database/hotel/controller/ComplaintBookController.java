@@ -16,9 +16,9 @@ public class ComplaintBookController {
     private final ComplaintBookService complaintBookService;
     private final ClientService clientService;
 
-    private ComplaintBookController(@NotNull Statement statement) {
-        this.complaintBookService = new ComplaintBookService(statement);
-        this.clientService = new ClientService(statement);
+    public ComplaintBookController() {
+        this.complaintBookService = new ComplaintBookService();
+        this.clientService = new ClientService();
     }
 
     public void acceptComplaintOfClient(@NotNull String passport,

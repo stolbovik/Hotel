@@ -1,6 +1,7 @@
 package org.stolbovik.database.hotel.GUI.Panels.Admins;
 
 import org.jetbrains.annotations.NotNull;
+import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.AcceptComplaintListener;
 import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.BackToAdminMenuListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
@@ -47,6 +48,7 @@ public class AcceptComplaintPanel extends JPanel {
         JPanel answerFieldPanel = new JPanel();
         answerFieldPanel.add(answerField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new AcceptComplaintListener(passportField, complaintField, answerField, info));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

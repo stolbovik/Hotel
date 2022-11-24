@@ -3,6 +3,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Finances;
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.BackToAdminMenuListener;
 import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.BackToFinanceMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.ChangePrizeListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -51,6 +52,7 @@ public class ChangePrizePanel extends JPanel {
         JPanel precentFieldPanel = new JPanel();
         precentFieldPanel.add(precentField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new ChangePrizeListener(up, down, passportField, precentField, info));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

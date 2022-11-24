@@ -6,13 +6,20 @@ import java.util.Date;
 
 public abstract class HelpFunction {
 
-    public static void checkDates(@NotNull Date start,
-                                  @NotNull Date end) throws IllegalArgumentException {
-        if(start.compareTo(end) >= 0) {
-            throw new IllegalArgumentException("Дата заезда должна быть раньше даты выезда");
+    public static void checkDatesWithNow(@NotNull Date start,
+                                         @NotNull Date end) throws IllegalArgumentException {
+        if (start.compareTo(end) >= 0) {
+            throw new IllegalArgumentException("Начальная дата должна быть раньше конечной");
         }
         if (start.compareTo(new Date()) <= 0) {
-            throw new IllegalArgumentException("Дата заезда должна быть указана в будущем");
+            throw new IllegalArgumentException("Начальная дата должна быть в будущем");
+        }
+    }
+
+    public static void checkDates(@NotNull Date start,
+                                         @NotNull Date end) throws IllegalArgumentException {
+        if (start.compareTo(end) >= 0) {
+            throw new IllegalArgumentException("Начальная дата должна быть раньше конечной");
         }
     }
 
@@ -29,11 +36,11 @@ public abstract class HelpFunction {
     }
 
     public static void checkName(@NotNull String name) throws IllegalArgumentException {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < name.length(); i++) {
             char let = name.charAt(i);
             if (!Character.isLetter(let) ||
-                i == 0 && Character.isLowerCase(let) ||
-                i != 0 && !Character.isLowerCase(let)) {
+                    i == 0 && Character.isLowerCase(let) ||
+                    i != 0 && !Character.isLowerCase(let)) {
                 throw new IllegalArgumentException("Неккоректное введённое имя");
             }
         }
@@ -60,7 +67,22 @@ public abstract class HelpFunction {
     }
 
     public static int getDayBetweenDate(@NotNull Date start,
-                                         @NotNull Date end) {
-        return (int)Math.ceil((float)(end.getTime() - start.getTime())/(24 * 60 * 60 * 1000));
+                                        @NotNull Date end) {
+        return (int) Math.ceil((float) (end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+    }
+
+    public static boolean checkDataString(@NotNull String data) {
+        if (data.length() != 10 ||
+                data.charAt(4) != '-' ||
+                data.charAt(7) != '-') {
+            return false;
+        }
+        for (int i = 0; i < data.length(); i++) {
+            if (data.charAt(i) != '-') {
+                if (!Character.isDigit(data.charAt(i)))
+                    return false;
+            }
+        }
+        return true;
     }
 }

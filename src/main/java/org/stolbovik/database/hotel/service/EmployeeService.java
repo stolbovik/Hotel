@@ -3,6 +3,7 @@ package org.stolbovik.database.hotel.service;
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.*;
 import org.stolbovik.database.hotel.repository.*;
+import org.stolbovik.database.hotel.utils.Constatns;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
@@ -20,13 +21,13 @@ public class EmployeeService {
     private final PostRepository postRepository;
     private final Statement statement;
 
-    public EmployeeService(@NotNull Statement statement) {
+    public EmployeeService() {
         this.employeeRepository = new EmployeeRepository();
         this.serviceWithEmployeeRepository = new ServiceWithEmployeeRepository();
         this.orderedServiceRepository = new OrderedServiceRepository();
         this.requestForCleaningRepository = new RequestForCleaningRepository();
         this.postRepository = new PostRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public List<Employee> getEmployees() throws SQLException {

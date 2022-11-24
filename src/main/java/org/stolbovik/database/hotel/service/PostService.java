@@ -3,6 +3,7 @@ package org.stolbovik.database.hotel.service;
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Post;
 import org.stolbovik.database.hotel.repository.PostRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,9 +15,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final Statement statement;
 
-    public PostService(@NotNull Statement statement) {
+    public PostService() {
         this.postRepository = new PostRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public List<Post> getAllPosts() throws SQLException {

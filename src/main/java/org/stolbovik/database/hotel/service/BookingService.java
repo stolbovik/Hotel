@@ -7,6 +7,7 @@ import org.stolbovik.database.hotel.models.Room;
 import org.stolbovik.database.hotel.repository.BookingRepository;
 import org.stolbovik.database.hotel.repository.ClientRepository;
 import org.stolbovik.database.hotel.repository.RoomsRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
@@ -22,11 +23,11 @@ public class BookingService {
     private final RoomsRepository roomsRepository;
     private final Statement statement;
 
-    public BookingService(@NotNull Statement statement) {
+    public BookingService() {
         this.bookingRepository = new BookingRepository();
         this.clientRepository = new ClientRepository();
         this.roomsRepository = new RoomsRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public List<Booking> getBookings() throws SQLException {

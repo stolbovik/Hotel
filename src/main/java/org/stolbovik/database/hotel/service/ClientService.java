@@ -3,6 +3,7 @@ package org.stolbovik.database.hotel.service;
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.Client;
 import org.stolbovik.database.hotel.repository.ClientRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,15 +15,16 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final Statement statement;
 
-    public ClientService(@NotNull Statement statement) {
+    public ClientService() {
         this.clientRepository = new ClientRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public Client getClientByPassport(@NotNull String passport) throws SQLException, IllegalArgumentException {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
         if (list.isEmpty()) {
+            System.out.println(passport);
             throw new IllegalArgumentException("Данного клиента нет в баззе");
         }
         return list.get().get(0);

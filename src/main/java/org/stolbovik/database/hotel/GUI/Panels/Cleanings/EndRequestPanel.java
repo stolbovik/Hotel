@@ -2,6 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Cleanings;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.BackToCleaningMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.EndRequestListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -35,6 +36,7 @@ public class EndRequestPanel extends JPanel {
         JPanel requestFieldPanel = new JPanel();
         requestFieldPanel.add(requestField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new EndRequestListener(requestField, info));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

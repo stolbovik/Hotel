@@ -6,6 +6,7 @@ import org.stolbovik.database.hotel.models.Room;
 import org.stolbovik.database.hotel.repository.BookingRepository;
 import org.stolbovik.database.hotel.repository.RoomsRepository;
 import org.stolbovik.database.hotel.repository.StatusOfCleaningRequestRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,11 +22,11 @@ public class RoomService {
     private final StatusOfCleaningRequestRepository statusOfCleaningRequestRepository;
     private final Statement statement;
 
-    public RoomService(@NotNull Statement statement) {
+    public RoomService() {
         this.roomsRepository = new RoomsRepository();
         this.bookingRepository = new BookingRepository();
         this.statusOfCleaningRequestRepository = new StatusOfCleaningRequestRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public List<Room> getAllRooms() throws SQLException {

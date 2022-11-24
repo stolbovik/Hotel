@@ -2,15 +2,14 @@ package org.stolbovik.database.hotel.GUI.Panels.Cleanings;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.BackToCleaningMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.CleaningListeners.NewEquipmentToEmployeeListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.controller.EquipmentController;
-import org.stolbovik.database.hotel.models.Equipment;
 import org.stolbovik.database.hotel.utils.Constatns;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewEquipmentToEmployeePanel extends JPanel {
@@ -20,7 +19,7 @@ public class NewEquipmentToEmployeePanel extends JPanel {
     private final JTextField equipmentField = new JTextField(15);
     private final JPasswordField passportField = new JPasswordField(15);
     private final JLabel servicesLabel = new JLabel("Список свободного");
-    private final JButton request = new JButton("Заказать");
+    private final JButton request = new JButton("Назначить");
     private final JButton back = new JButton("Назад");
     private final JLabel info = (new JLabel(""));
     private final MainFrame mainFrame;
@@ -61,6 +60,7 @@ public class NewEquipmentToEmployeePanel extends JPanel {
         JPanel servicesListPanel = new JPanel();
         servicesListPanel.add(servicePane);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new NewEquipmentToEmployeeListener(passportField, info, equipmentField));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);
@@ -75,7 +75,7 @@ public class NewEquipmentToEmployeePanel extends JPanel {
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
         add(passportFieldPanel, new GridBagConstraints(2, 1, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(servicesListPanel, new GridBagConstraints(1, 1, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(servicesListPanel, new GridBagConstraints(1, 1, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
         add(servicesLabelPanel, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));

@@ -5,6 +5,7 @@ import org.stolbovik.database.hotel.models.Booking;
 import org.stolbovik.database.hotel.models.OrderedService;
 import org.stolbovik.database.hotel.models.ServiceWithEmployee;
 import org.stolbovik.database.hotel.repository.OrderedServiceRepository;
+import org.stolbovik.database.hotel.utils.Constatns;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
@@ -18,9 +19,9 @@ public class OrderedServiceService {
     private final OrderedServiceRepository orderedServiceRepository;
     private final Statement statement;
 
-    public OrderedServiceService(@NotNull Statement statement) {
+    public OrderedServiceService() {
         this.orderedServiceRepository = new OrderedServiceRepository();
-        this.statement = statement;
+        this.statement = Constatns.STATEMENT;
     }
 
     public boolean addNewOrderedService(@NotNull ServiceWithEmployee serviceWithEmployee,
