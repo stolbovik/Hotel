@@ -15,4 +15,8 @@ public class Booking {
     private int idOfClient;
     private int idOfRoom;
 
+    public boolean getStatusOfSettlement() {
+        return statusOfSettlement;
+    }
+
 }

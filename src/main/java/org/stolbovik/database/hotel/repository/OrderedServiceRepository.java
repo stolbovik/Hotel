@@ -24,7 +24,7 @@ public class OrderedServiceRepository {
             orderedService.setId(resultSet.getInt("id"));
             orderedService.setServiceWithEmployee(resultSet.getInt("Услуга и исполнитель"));
             orderedService.setDate(resultSet.getDate("Дата"));
-            orderedService.setIdOfRoom(resultSet.getInt("ID комнаты"));
+            orderedService.setIdOfRoom(resultSet.getInt("Номер комнаты"));
             orderedServices.add(orderedService);
         } while (resultSet.next());
         return Optional.of(orderedServices);

@@ -55,6 +55,13 @@ public class BookingController {
         return room.getKey();
     }
 
+    public int getPricebyBooking(@NotNull String passport) throws SQLException, IllegalArgumentException {
+        HelpFunction.checkPassport(passport);
+        Booking booking = bookingService.getTodayStayBookingByPassport(passport);
+        Room room = roomService.getRoomByID(booking.getIdOfRoom());
+        return room.getPriceInDay() * HelpFunction.getDayBetweenDate(booking.getDateOfStay(), booking.getDateOfDeparture());
+    }
+
     public void moveOutFromRoom(@NotNull String key) throws SQLException, IllegalArgumentException {
         Room room = roomService.getRoomByKey(key);
         Booking booking = bookingService.getTodayBookingByIdOfRoom(room.getId());
@@ -84,7 +91,7 @@ public class BookingController {
             }
         }
         if (!flag) {
-            throw new IllegalArgumentException("Ваша комната не свободна для продления");
+            throw new IllegalArgumentException("Комната занята для продления");
         }
         bookingService.setDateOfDeparture(booking, newEnd);
         return room.getPriceInDay() * HelpFunction.getDayBetweenDate(booking.getDateOfDeparture(), newEnd);

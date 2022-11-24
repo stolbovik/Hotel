@@ -43,7 +43,7 @@ public class OrderedServiceService {
     private Optional<OrderedService> getRequestByServiceWithEmployeeAndDate(@NotNull ServiceWithEmployee serviceWithEmployee,
                                                                             @NotNull Date date) throws SQLException {
         String query = "select * from [Заказанные услуги] where [Услуга и исполнитель] = " +
-                serviceWithEmployee.getId() + " and Дата = '" + HelpFunction.dateToSqlDate(date);
+                serviceWithEmployee.getId() + " and Дата = '" + HelpFunction.dateToSqlDate(date) + "'";
         Optional<List<OrderedService>> list = orderedServiceRepository.readOrderedServices(statement, query);
         return list.map(orderedServices -> orderedServices.get(0));
     }

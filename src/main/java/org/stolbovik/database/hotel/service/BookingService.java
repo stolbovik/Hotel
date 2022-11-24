@@ -60,14 +60,14 @@ public class BookingService {
         String query = "select * from Клиенты where Паспорт = " + passport;
         Optional<List<Client>> list = clientRepository.readClients(statement, query);
         if (list.isEmpty()) {
-            throw new SQLException("Данного клиента нет в базе данных");
+            throw new SQLException("Клиента нет в базе данных");
         }
         Client client = list.get().get(0);
         query = "select * from Бронирование where [ID Клиента] = " + client.getId() + " AND " +
                 "Прибывание = '" + HelpFunction.dateToSqlDate(new Date()) + "'";
         Optional<List<Booking>> list2 = bookingRepository.readBookings(statement, query);
         if (list2.isEmpty()) {
-            throw new IllegalArgumentException("Брони на заезд на сегодня на данного клиента нет");
+            throw new IllegalArgumentException("Брони на заезд cегодня нет");
         }
         return list2.get().get(0);
     }
@@ -95,7 +95,7 @@ public class BookingService {
                 "' AND Выезд >= '" + HelpFunction.dateToSqlDate(new Date()) + "'";
         Optional<List<Booking>> list2 = bookingRepository.readBookings(statement, query);
         if (list2.isEmpty()) {
-            throw new IllegalArgumentException("Брони на сегодня на данного клиента нет");
+            throw new IllegalArgumentException("Брони на вас на сегодня нет");
         }
         return list2.get().get(0);
     }
@@ -129,6 +129,12 @@ public class BookingService {
             temp = 1;
         } else {
             temp = 0;
+        }
+        if (booking.getStatusOfSettlement() && status) {
+            throw new IllegalArgumentException("Вы уже заехали");
+        }
+        if (!booking.getStatusOfSettlement() && !status) {
+            throw new IllegalArgumentException("Вы уже выехали");
         }
         String query = "update Бронирование set [Статус заселения] = " + temp + " where ID = " + booking.getId();
         int res = bookingRepository.updateBooking(statement, query);

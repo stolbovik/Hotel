@@ -2,11 +2,15 @@ package org.stolbovik.database.hotel.GUI.Panels.Guests;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.BackToGuestMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.BookRoomListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
+import org.stolbovik.database.hotel.controller.PaidServiceController;
 import org.stolbovik.database.hotel.utils.Constatns;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.List;
 
 public class BookRoomPanel extends JPanel {
 
@@ -36,6 +40,17 @@ public class BookRoomPanel extends JPanel {
     }
 
     private void setComponentOnFrame() {
+        PaidServiceController equipmentController = new PaidServiceController();
+        List<String> list;
+        try {
+            list = equipmentController.getAllPaidServiceWithPrice();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        String[] arrayname = list.toArray(new String[list.size()]);
+        JList servicesList = new JList(arrayname);
+        JScrollPane servicePane = new JScrollPane(servicesList);
+
         JPanel passsportLabelPanel = new JPanel();
         passsportLabelPanel.add(passsportLabel);
         JPanel FIOLabelPanel = new JPanel();
@@ -53,6 +68,7 @@ public class BookRoomPanel extends JPanel {
         JPanel dataEndFieldPanel = new JPanel();
         dataEndFieldPanel.add(dataEndField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new BookRoomListener(info, FIOField, passportField, dataStartField, dataEndField));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

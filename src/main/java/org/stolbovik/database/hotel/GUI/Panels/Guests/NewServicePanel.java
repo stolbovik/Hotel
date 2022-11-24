@@ -2,15 +2,14 @@ package org.stolbovik.database.hotel.GUI.Panels.Guests;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.BackToGuestMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.OrderServiceListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.controller.PaidServiceController;
-import org.stolbovik.database.hotel.service.PaidServiceService;
 import org.stolbovik.database.hotel.utils.Constatns;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewServicePanel extends JPanel {
@@ -18,10 +17,12 @@ public class NewServicePanel extends JPanel {
     private final JLabel serviceLabel = new JLabel("Название услуги");
     private final JLabel passportLabel = new JLabel("Серия и номер паспорта");
 
-    private final JLabel dateOfServiceLabel = new JLabel("Дата исполнения(ГГГГ-ММ-ДД)");
+    private final JLabel dateOfServiceLabel = new JLabel("Дата исполнения (ГГГГ-ММ-ДД)");
+    private final JLabel priceLabel = new JLabel("Внесите плату");
     private final JTextField serviceField = new JTextField(15);
     private final JPasswordField passportField = new JPasswordField(15);
     private final JTextField dateOfServiceField = new JTextField(15);
+    private final JTextField priceField = new JTextField(15);
     private final JButton request = new JButton("Заказать");
     private final JButton back = new JButton("Назад");
     private final JLabel info = (new JLabel(""));
@@ -41,9 +42,9 @@ public class NewServicePanel extends JPanel {
 
     private void setComponentOnFrame() {
         PaidServiceController equipmentController = new PaidServiceController();
-        java.util.List<String> list;
+        List<String> list;
         try {
-            list = equipmentController.getAllPaidService();
+            list = equipmentController.getAllPaidServiceWithPrice();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -52,6 +53,10 @@ public class NewServicePanel extends JPanel {
         JScrollPane servicePane = new JScrollPane(servicesList);
         JPanel serviceLabelPanel = new JPanel();
         serviceLabelPanel.add(serviceLabel);
+        JPanel priceLabelPanel = new JPanel();
+        priceLabelPanel.add(priceLabel);
+        JPanel priceFieldPanel = new JPanel();
+        priceFieldPanel.add(priceField);
         JPanel passportLabelPanel = new JPanel();
         passportLabelPanel.add(passportLabel);
         JPanel dateOfServiceLabelPanel = new JPanel();
@@ -65,6 +70,7 @@ public class NewServicePanel extends JPanel {
         JPanel serviceScrollPanel = new JPanel();
         serviceScrollPanel.add(servicePane);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new OrderServiceListener(info, serviceField, passportField, dateOfServiceField, priceField));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);
@@ -73,23 +79,27 @@ public class NewServicePanel extends JPanel {
         backPanel.add(back);
         add(serviceLabelPanel, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(passportLabelPanel, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.SOUTH,
+        add(passportLabelPanel, new GridBagConstraints(0, 2, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
         add(dateOfServiceLabelPanel, new GridBagConstraints(2, 0, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
+        add(priceLabelPanel, new GridBagConstraints(2, 2, 1, 1, 1, 1, GridBagConstraints.SOUTH,
+                GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
         add(serviceFieldPanel, new GridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(passportFieldPanel, new GridBagConstraints(1, 1, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(passportFieldPanel, new GridBagConstraints(0, 3, 1, 1, 1, 1, GridBagConstraints.NORTH,
+                GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
+        add(priceFieldPanel, new GridBagConstraints(2, 3, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
         add(dateOfServiceFieldPanel, new GridBagConstraints(2, 1, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(serviceScrollPanel, new GridBagConstraints(1, 2, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(serviceScrollPanel, new GridBagConstraints(0, 2, 3, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(infoPanel, new GridBagConstraints(1, 3, 1, 1, 1, 1, GridBagConstraints.SOUTH,
+        add(infoPanel, new GridBagConstraints(1, 4, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(requestPanel, new GridBagConstraints(0, 3, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(requestPanel, new GridBagConstraints(0, 4, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(backPanel, new GridBagConstraints(2, 3, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(backPanel, new GridBagConstraints(2, 4, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
     }
 

@@ -2,6 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Guests;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.BackToGuestMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.CheckIntoRoomListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -11,7 +12,9 @@ import java.awt.*;
 public class CheckIntoRoomPanel extends JPanel {
 
     private final JLabel passsportLabel = new JLabel("Серия и номер паспорта");
+    private final JLabel priceLabel = new JLabel("Оплатите проживание");
     private final JPasswordField passportField = new JPasswordField(20);
+    private final JTextField priceField = new JPasswordField(20);
     private final JButton request = new JButton("Запросить ключ");
     private final JButton back = new JButton("Назад");
     private final JLabel info = (new JLabel(""));
@@ -32,8 +35,13 @@ public class CheckIntoRoomPanel extends JPanel {
     private void setComponentOnFrame() {
         JPanel passsportLabelPanel = new JPanel();
         passsportLabelPanel.add(passsportLabel);
+        JPanel priceLabelPanel = new JPanel();
+        priceLabelPanel.add(priceLabel);
+        JPanel priceFieldPanel = new JPanel();
+        priceFieldPanel.add(priceField);
         JPanel passwordFieldPanel = new JPanel();
         passwordFieldPanel.add(passportField);
+        request.addActionListener(new CheckIntoRoomListener(info, priceField, passportField));
         JPanel requestPanel = new JPanel();
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
@@ -41,15 +49,19 @@ public class CheckIntoRoomPanel extends JPanel {
         JPanel backPanel = new JPanel();
         back.addActionListener(new BackToGuestMenuListener(mainFrame));
         backPanel.add(back);
-        add(passsportLabelPanel, new GridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.SOUTH,
+        add(passsportLabelPanel, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(passwordFieldPanel, new GridBagConstraints(0, 2, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(passwordFieldPanel, new GridBagConstraints(0, 1, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(infoPanel, new GridBagConstraints(0, 3, 1, 1, 1, 1, GridBagConstraints.SOUTH,
+        add(priceLabelPanel, new GridBagConstraints(2, 0, 1, 1, 1, 1, GridBagConstraints.SOUTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(requestPanel, new GridBagConstraints(0, 4, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(priceFieldPanel, new GridBagConstraints(2, 1, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(backPanel, new GridBagConstraints(0, 5, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(infoPanel, new GridBagConstraints(1, 2, 1, 1, 1, 1, GridBagConstraints.NORTH,
+                GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
+        add(requestPanel, new GridBagConstraints(0, 2, 1, 1, 1, 1, GridBagConstraints.NORTH,
+                GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
+        add(backPanel, new GridBagConstraints(2, 2, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
     }
 

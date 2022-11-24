@@ -25,12 +25,12 @@ public abstract class HelpFunction {
 
     public static void checkPassport(@NotNull String passport) throws IllegalArgumentException {
         if (passport.length() != 10) {
-            throw new IllegalArgumentException("Неккоректные паспортные данные");
+            throw new IllegalArgumentException("Неккоректный паспорт");
         }
         for (int i = 0; i < 10; i++) {
             char number = passport.charAt(i);
             if (!Character.isDigit(number)) {
-                throw new IllegalArgumentException("Неккоректные паспортные данные");
+                throw new IllegalArgumentException("Неккоректный паспорт");
             }
         }
     }
@@ -48,7 +48,7 @@ public abstract class HelpFunction {
 
     public static void checkDate(@NotNull Date date) throws IllegalArgumentException {
         if (date.compareTo(new Date()) < 0) {
-            throw new IllegalArgumentException("Неккоректная дата");
+            throw new IllegalArgumentException("Нельзя заказать услугу в прошлое");
         }
     }
 

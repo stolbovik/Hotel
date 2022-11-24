@@ -34,10 +34,10 @@ public class CalculateSalariesForTimeListener implements ActionListener {
                     !HelpFunction.checkDataString(dataStartField.getText())) {
                 throw new IllegalArgumentException("Неверный формат дат");
             }
-            Date start = new Date(Integer.parseInt(dataStartField.getText().substring(0,4)) - 1970,
+            Date start = new Date(Integer.parseInt(dataStartField.getText().substring(0,4)) - 1900,
                 Integer.parseInt(dataStartField.getText().substring(5,7)) - 1,
                 Integer.parseInt(dataStartField.getText().substring(8,10)));
-            Date end = new Date(Integer.parseInt(dataEndField.getText().substring(0,4)) - 1970,
+            Date end = new Date(Integer.parseInt(dataEndField.getText().substring(0,4)) - 1900,
                 Integer.parseInt(dataEndField.getText().substring(5,7)) - 1,
                 Integer.parseInt(dataEndField.getText().substring(8,10)));
             sum = employeeController.calculateSalariesForTime(start, end);

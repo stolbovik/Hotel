@@ -57,7 +57,7 @@ public class ServiceWithEmployeeService {
         String query = "select * from [Сопоставление услуг и исполнителей] where [id услуги] = " + paidService.getId();
         Optional<List<ServiceWithEmployee>> list = serviceWithEmployeeRepository.readServiceWithEmployee(statement, query);
         if (list.isEmpty()) {
-            throw new SQLException("Данную платную услугу мы пока не оказываем");
+            throw new SQLException("Услугу мы пока не оказываем");
         }
         Optional<ServiceWithEmployee> serviceWithEmployee = Optional.empty();
         for(ServiceWithEmployee service: list.get()) {
@@ -72,7 +72,7 @@ public class ServiceWithEmployeeService {
         if(serviceWithEmployee.isPresent()) {
             return serviceWithEmployee.get();
         }
-        throw new SQLException("Все сотрудники этой услуги заняты на данную дату");
+        throw new SQLException("Сотрудники услуги заняты на эту дату");
     }
 
 }

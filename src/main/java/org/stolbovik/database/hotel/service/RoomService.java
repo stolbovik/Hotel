@@ -7,13 +7,11 @@ import org.stolbovik.database.hotel.repository.BookingRepository;
 import org.stolbovik.database.hotel.repository.RoomsRepository;
 import org.stolbovik.database.hotel.repository.StatusOfCleaningRequestRepository;
 import org.stolbovik.database.hotel.utils.Constatns;
+import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class RoomService {
 
@@ -62,11 +60,11 @@ public class RoomService {
         if (list.isPresent()) {
             return list.get().get(0);
         }
-        throw new SQLException("В отеле нет комнаты с таким номером\n");
+        throw new SQLException("Такого номера нет\n");
     }
 
     public List<Room> getFreeRooms(@NotNull Date start,
-                                             @NotNull Date end) throws SQLException, IllegalArgumentException {
+                                   @NotNull Date end) throws SQLException, IllegalArgumentException {
         String query = "select * from Бронирование";
         List<Room> allRooms = getAllRooms();
         List<Booking> allBookings;
@@ -76,24 +74,35 @@ public class RoomService {
         } else {
             throw new SQLException("Ни на какой номер бронирования нет\n");
         }
-        Iterator<Room> roomIterator = allRooms.iterator();
-        Iterator<Booking> bookingIterator = allBookings.iterator();
-        while (roomIterator.hasNext()) {
-            while (bookingIterator.hasNext()) {
-                Room room = roomIterator.next();
-                Booking booking = bookingIterator.next();
-                if (room.getId() == booking.getIdOfRoom() && (
-                    (start.compareTo(booking.getDateOfDeparture()) <= 0) && (start.compareTo(booking.getDateOfStay()) >= 0) ||
-                    (end.compareTo(booking.getDateOfDeparture()) <= 0) && (end.compareTo(booking.getDateOfStay()) >= 0) ||
-                    (start.compareTo(booking.getDateOfStay()) <= 0) && (end.compareTo(booking.getDateOfDeparture()) >= 0))) {
-                    roomIterator.remove();
+        List<Room> deleteRoom = new ArrayList<>();
+        for(Room room: allRooms) {
+            for (Booking booking: allBookings) {
+                if(booking.getIdOfRoom() == room.getId()) {
+                    if (start.compareTo(booking.getDateOfStay()) >= 0 && start.compareTo(booking.getDateOfDeparture()) <= 0 ||
+                            end.compareTo(booking.getDateOfStay()) >= 0 && end.compareTo(booking.getDateOfDeparture()) <= 0 ||
+                            start.compareTo(booking.getDateOfStay()) <= 0 && end.compareTo(booking.getDateOfDeparture()) >= 0) {
+                        deleteRoom.add(room);
+                    }
                 }
             }
         }
-        if (allRooms.isEmpty()) {
+        List<Room> answerList = new ArrayList<>();
+        for(Room room:allRooms) {
+            boolean flag = true;
+            for(Room dRoom: deleteRoom) {
+                if (room.getId() == dRoom.getId()) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                answerList.add(room);
+            }
+        }
+        if (answerList.isEmpty()) {
             throw new IllegalArgumentException("Нет свободных номеров на эти даты");
         }
-        return allRooms;
+        return answerList;
     }
 
     public boolean setCleaningStatus(@NotNull Room room, boolean status) throws SQLException {
