@@ -2,6 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Admins;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.BackToAdminMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.FireEmployeeListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -35,6 +36,7 @@ public class FireEmployeePanel extends JPanel {
         JPanel passportFieldPanel = new JPanel();
         passportFieldPanel.add(passportField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new FireEmployeeListener(passportField, info));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

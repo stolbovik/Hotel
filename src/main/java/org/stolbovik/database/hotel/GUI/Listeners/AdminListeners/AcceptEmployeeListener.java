@@ -60,7 +60,6 @@ public class AcceptEmployeeListener implements ActionListener {
         } catch (Exception ex) {
             flag = false;
             info.setText(ex.getMessage());
-            ex.printStackTrace();
         }
         if (flag) {
             info.setText("Сотрудник принят");
