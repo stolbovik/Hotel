@@ -2,8 +2,8 @@ package org.stolbovik.database.hotel.GUI.Listeners.GuestListeners;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.controller.BookingController;
-import org.stolbovik.database.hotel.controller.PaidServiceController;
 import org.stolbovik.database.hotel.controller.RoomController;
+import org.stolbovik.database.hotel.models.Booking;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
-public class ExtendServiceListener implements ActionListener {
+public class ExtendRoomListener implements ActionListener {
 
     private final JLabel info;
     private final JTextField roomField;
@@ -21,10 +21,10 @@ public class ExtendServiceListener implements ActionListener {
     private final RoomController roomController;
 
 
-    public ExtendServiceListener(@NotNull JLabel info,
-                                @NotNull JTextField roomField,
-                                @NotNull JTextField newDataEndField,
-                                @NotNull JTextField priceField) {
+    public ExtendRoomListener(@NotNull JLabel info,
+                              @NotNull JTextField roomField,
+                              @NotNull JTextField newDataEndField,
+                              @NotNull JTextField priceField) {
         this.info = info;
         this.roomField = roomField;
         this.newDataEndField = newDataEndField;
@@ -58,9 +58,11 @@ public class ExtendServiceListener implements ActionListener {
                     throw new IllegalArgumentException("Неверый формат введённой суммы");
                 }
             }
+            Booking booking = bookingController.getBookingByNumRoom(roomField.getText());
             int pr = roomController.getPriceRoomByNum(Integer.parseInt(roomField.getText()));
+            pr = pr * HelpFunction.getDayBetweenDate(booking.getDateOfDeparture(), newDate);
             if (Integer.parseInt(priceField.getText()) < pr) {
-                throw new IllegalArgumentException("Недостаточно. Цена: " + pr + " в день");
+                throw new IllegalArgumentException("Недостаточно. Цена: " + pr);
             } else if (Integer.parseInt(priceField.getText()) > pr) {
                 backPr = Integer.parseInt(priceField.getText()) - pr;
             }

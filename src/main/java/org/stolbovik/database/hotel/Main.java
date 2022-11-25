@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Main {
-
     public static void main( String[] args ) {
         DBConnector dbConnector = new DBConnector(Constatns.URL, Constatns.LOGIN, Constatns.PASSWORD);
         try(Statement statement = dbConnector.getConnection().createStatement()) {

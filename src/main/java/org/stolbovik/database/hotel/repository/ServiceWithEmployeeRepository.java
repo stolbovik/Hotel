@@ -30,7 +30,7 @@ public class ServiceWithEmployeeRepository {
     }
 
     public int updateServiceWithEmployee(@NotNull Statement statement,
-                                                @NotNull String query) throws SQLException {
+                                         @NotNull String query) throws SQLException {
         return statement.executeUpdate(query);
     }
 

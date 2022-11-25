@@ -110,15 +110,14 @@ public class RequestForCleaningService {
         }
     }
 
-    public boolean setStatusOfRequest(@NotNull RequestForCleaning requestForCleaning,
-                                      @NotNull StatusOfCleaningRequest statusOfCleaningRequest) throws SQLException {
+    public void setStatusOfRequest(@NotNull RequestForCleaning requestForCleaning,
+                                   @NotNull StatusOfCleaningRequest statusOfCleaningRequest) throws SQLException {
         String query =  "update [Заявки на уборку] set [Статус заявки] = " + statusOfCleaningRequest.getId()
                         + " where ID = " + requestForCleaning.getId();
         int res = requestForCleaningRepository.updateRequestForCleaning(statement, query);
         if (res != 1) {
             throw new SQLException("Не удалось изменить статус заявки на уборку");
         }
-        return true;
     }
 
 }

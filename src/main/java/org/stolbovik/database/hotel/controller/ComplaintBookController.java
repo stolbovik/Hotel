@@ -8,7 +8,6 @@ import org.stolbovik.database.hotel.service.ComplaintBookService;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 
 public class ComplaintBookController {

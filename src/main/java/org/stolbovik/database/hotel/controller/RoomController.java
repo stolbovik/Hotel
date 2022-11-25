@@ -5,9 +5,7 @@ import org.stolbovik.database.hotel.models.Room;
 import org.stolbovik.database.hotel.service.RoomService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class RoomController {
 

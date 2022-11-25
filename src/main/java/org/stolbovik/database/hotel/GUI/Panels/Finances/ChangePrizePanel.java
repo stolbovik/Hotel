@@ -1,7 +1,6 @@
 package org.stolbovik.database.hotel.GUI.Panels.Finances;
 
 import org.jetbrains.annotations.NotNull;
-import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.BackToAdminMenuListener;
 import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.BackToFinanceMenuListener;
 import org.stolbovik.database.hotel.GUI.Listeners.FinanceListeners.ChangePrizeListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;

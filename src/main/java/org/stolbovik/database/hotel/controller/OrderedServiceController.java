@@ -10,9 +10,7 @@ import org.stolbovik.database.hotel.service.PaidServiceService;
 import org.stolbovik.database.hotel.service.ServiceWithEmployeeService;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
-import java.net.http.HttpRequest;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 
 public class OrderedServiceController {
@@ -29,9 +27,9 @@ public class OrderedServiceController {
         this.serviceWithEmployeeService = new ServiceWithEmployeeService();
     }
 
-    public int orderPaidService(@NotNull String name,
-                                @NotNull String passport,
-                                @NotNull Date date) throws SQLException, IllegalArgumentException {
+    public void orderPaidService(@NotNull String name,
+                                 @NotNull String passport,
+                                 @NotNull Date date) throws SQLException, IllegalArgumentException {
         HelpFunction.checkDate(date);
         HelpFunction.checkPassport(passport);
         Booking booking = bookingService.getTodayBookingByPassport(passport);
@@ -42,7 +40,6 @@ public class OrderedServiceController {
         ServiceWithEmployee serviceWithEmployee = serviceWithEmployeeService.
                 getServiceWithFreeEmployeeAndDate(paidService, date);
         orderedServiceService.addNewOrderedService(serviceWithEmployee, date, booking);
-        return paidService.getPrice();
     }
 
 }

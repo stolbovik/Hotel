@@ -2,7 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Guests;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.BackToGuestMenuListener;
-import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ExtendServiceListener;
+import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.ExtendRoomListener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -47,7 +47,7 @@ public class ExtendRoomPanel extends JPanel {
         JPanel newDataEndFieldPanel = new JPanel();
         newDataEndFieldPanel.add(newDataEndField);
         JPanel requestPanel = new JPanel();
-        request.addActionListener(new ExtendServiceListener(info, roomField, newDataEndField, priceField));
+        request.addActionListener(new ExtendRoomListener(info, roomField, newDataEndField, priceField));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);

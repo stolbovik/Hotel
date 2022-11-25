@@ -1,12 +1,9 @@
 package org.stolbovik.database.hotel.controller;
 
-import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.models.*;
 import org.stolbovik.database.hotel.service.*;
-import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
-import java.sql.Statement;;
 
 public class RequestForCleaningController {
 

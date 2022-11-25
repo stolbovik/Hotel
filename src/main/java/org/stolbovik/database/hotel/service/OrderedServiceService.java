@@ -24,9 +24,9 @@ public class OrderedServiceService {
         this.statement = Constatns.STATEMENT;
     }
 
-    public boolean addNewOrderedService(@NotNull ServiceWithEmployee serviceWithEmployee,
-                                        @NotNull Date date,
-                                        @NotNull Booking booking) throws SQLException {
+    public void addNewOrderedService(@NotNull ServiceWithEmployee serviceWithEmployee,
+                                     @NotNull Date date,
+                                     @NotNull Booking booking) throws SQLException {
         if (getRequestByServiceWithEmployeeAndDate(serviceWithEmployee, date).isPresent()) {
             throw new IllegalArgumentException("На данную дату услуга от данного сотрудника уже заказана");
         }
@@ -37,7 +37,6 @@ public class OrderedServiceService {
         if (res != 1) {
             throw new SQLException("Не удалось добавить заявку на платную услугу");
         }
-        return true;
     }
 
     private Optional<OrderedService> getRequestByServiceWithEmployeeAndDate(@NotNull ServiceWithEmployee serviceWithEmployee,

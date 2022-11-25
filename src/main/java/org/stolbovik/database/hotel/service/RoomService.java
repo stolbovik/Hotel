@@ -7,7 +7,6 @@ import org.stolbovik.database.hotel.repository.BookingRepository;
 import org.stolbovik.database.hotel.repository.RoomsRepository;
 import org.stolbovik.database.hotel.repository.StatusOfCleaningRequestRepository;
 import org.stolbovik.database.hotel.utils.Constatns;
-import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -105,7 +104,7 @@ public class RoomService {
         return answerList;
     }
 
-    public boolean setCleaningStatus(@NotNull Room room, boolean status) throws SQLException {
+    public void setCleaningStatus(@NotNull Room room, boolean status) throws SQLException {
         int temp;
         if (status) {
             temp = 1;
@@ -117,7 +116,6 @@ public class RoomService {
         if (res != 1) {
             throw new SQLException("Не удалось изменить статус заселения у данного бронирования");
         }
-        return true;
     }
 
 }

@@ -12,7 +12,6 @@ import org.stolbovik.database.hotel.utils.Constatns;
 import org.stolbovik.database.hotel.utils.HelpFunction;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class BookingController {
         this.requestForCleaningService = new RequestForCleaningService();
     }
 
-    public int bookRoom(@NotNull String passport, @NotNull String firstName, @NotNull String lastName,
+    public void bookRoom(@NotNull String passport, @NotNull String firstName, @NotNull String lastName,
                         @NotNull String fatherName, @NotNull Date start, @NotNull Date end)
                         throws SQLException, IllegalArgumentException {
         HelpFunction.checkDatesWithNowAndNowDay(start, end);
@@ -52,8 +51,7 @@ public class BookingController {
                 throw new IllegalArgumentException("Параллельные брони запрещены");
             }
         }
-        bookingService.addBooking(start, end, client, room, 1);
-        return room.getPriceInDay() * HelpFunction.getDayBetweenDate(start, end);
+        bookingService.addBooking(start, end, client, room, 1);;
     }
 
     public List<Booking> getAllBooking() throws SQLException {
@@ -74,6 +72,10 @@ public class BookingController {
         return room.getPriceInDay() * HelpFunction.getDayBetweenDate(booking.getDateOfStay(), booking.getDateOfDeparture());
     }
 
+    public Booking getBookingByNumRoom(@NotNull String numRoom) throws SQLException, IllegalArgumentException {
+        return bookingService.getTodayBookingByIdOfRoom(roomService.getRoomByNumber(Integer.parseInt(numRoom)).getId());
+    }
+
     public void moveOutFromRoom(@NotNull String key) throws SQLException, IllegalArgumentException {
         Room room = roomService.getRoomByKey(key);
         Booking booking = bookingService.getTodayBookingByIdOfRoom(room.getId());
@@ -85,7 +87,7 @@ public class BookingController {
         }
     }
 
-    public int extendBooking(int numRoom, @NotNull Date newEnd)
+    public void extendBooking(int numRoom, @NotNull Date newEnd)
             throws SQLException, IllegalArgumentException {
         Room room = roomService.getRoomByNumber(numRoom);
         HelpFunction.checkDate(newEnd);
@@ -106,7 +108,6 @@ public class BookingController {
             throw new IllegalArgumentException("Комната занята для продления");
         }
         bookingService.setDateOfDeparture(booking, newEnd);
-        return room.getPriceInDay() * HelpFunction.getDayBetweenDate(booking.getDateOfDeparture(), newEnd);
     }
 
     public int calculateProfitFromBookings(@NotNull Date start,
@@ -118,5 +119,4 @@ public class BookingController {
     public void deleteBookingBiId(int id) throws SQLException {
         bookingService.deleteBookingBiId(id);
     }
-
 }
