@@ -189,4 +189,12 @@ public class BookingService {
         return income;
     }
 
+    public void deleteBookingBiId(int id) throws SQLException {
+        String query = "delete from Бронирование where ID = " + id;
+        int res = bookingRepository.updateBooking(statement, query);
+        if (res != 1) {
+            throw new SQLException("Не удалось удалить");
+        }
+    }
+
 }

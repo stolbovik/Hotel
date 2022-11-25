@@ -2,7 +2,6 @@ package org.stolbovik.database.hotel.GUI.Listeners.GuestListeners;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.controller.BookingController;
-import org.stolbovik.database.hotel.controller.RoomController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,6 @@ public class CheckIntoRoomListener implements ActionListener {
     private final JPasswordField passportField;
     private final JTextField priceField;
     private final BookingController bookingController;
-    private final RoomController roomController;
 
 
     public CheckIntoRoomListener(@NotNull JLabel info,
@@ -24,7 +22,6 @@ public class CheckIntoRoomListener implements ActionListener {
         this.priceField = priceField;
         this.passportField = passportField;
         this.bookingController = new BookingController();
-        this.roomController = new RoomController();
 
     }
 

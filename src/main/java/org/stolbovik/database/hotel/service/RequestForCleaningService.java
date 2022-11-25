@@ -86,7 +86,7 @@ public class RequestForCleaningService {
         }
         query = "insert into [Заявки на уборку] ([Номер бронирования], [Статус заявки], " +
                 "[Дата заявки]) values (" + booking.getId() + ", 1, '" +
-                HelpFunction.dateToSqlDate(new Date()) + ")";
+                HelpFunction.dateToSqlDate(new Date()) + "')";
         int res = requestForCleaningRepository.updateRequestForCleaning(statement, query);
         if (res != 1) {
             throw new SQLException("Не удалось добавить заявку на бронирование");

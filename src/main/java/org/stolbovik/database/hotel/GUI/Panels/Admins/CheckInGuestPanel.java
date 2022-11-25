@@ -2,7 +2,7 @@ package org.stolbovik.database.hotel.GUI.Panels.Admins;
 
 import org.jetbrains.annotations.NotNull;
 import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.BackToAdminMenuListener;
-import org.stolbovik.database.hotel.GUI.Listeners.GuestListeners.BackToGuestMenuListener;
+import org.stolbovik.database.hotel.GUI.Listeners.AdminListeners.CheckInGuestLestener;
 import org.stolbovik.database.hotel.GUI.MainFrame;
 import org.stolbovik.database.hotel.utils.Constatns;
 
@@ -14,9 +14,11 @@ public class CheckInGuestPanel extends JPanel {
     private final JLabel passportLabel = new JLabel("Паспортные данные");
     private final JLabel FIOLabel = new JLabel("ФИО");
     private final JLabel dataEndLabel = new JLabel("Дата выезда (ГГГГ-ММ-ДД)");
+    private final JLabel priceLabel = new JLabel("Оплатите комнату");
     private final JPasswordField passportField = new JPasswordField(20);
     private final JTextField FIOField = new JTextField(20);
     private final JTextField dataEndField = new JTextField(20);
+    private final JTextField priceField = new JTextField(20);
     private final JButton request = new JButton("Заселить");
     private final JButton back = new JButton("Назад");
     private final JLabel info = (new JLabel(""));
@@ -37,6 +39,10 @@ public class CheckInGuestPanel extends JPanel {
     private void setComponentOnFrame() {
         JPanel passportLabelPanel = new JPanel();
         passportLabelPanel.add(passportLabel);
+        JPanel priceLabelPanel = new JPanel();
+        priceLabelPanel.add(priceLabel);
+        JPanel priceFieldPanel = new JPanel();
+        priceFieldPanel.add(priceField);
         JPanel FIOLabelPanel = new JPanel();
         FIOLabelPanel.add(FIOLabel);
         JPanel dataEndLabelPanel = new JPanel();
@@ -48,6 +54,7 @@ public class CheckInGuestPanel extends JPanel {
         JPanel dataEndFieldPanel = new JPanel();
         dataEndFieldPanel.add(dataEndField);
         JPanel requestPanel = new JPanel();
+        request.addActionListener(new CheckInGuestLestener(passportField, FIOField, dataEndField, priceField, info));
         requestPanel.add(request);
         JPanel infoPanel = new JPanel();
         infoPanel.add(info);
@@ -66,11 +73,15 @@ public class CheckInGuestPanel extends JPanel {
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
         add(dataEndFieldPanel, new GridBagConstraints(1, 2, 1, 1, 1, 1, GridBagConstraints.CENTER,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(infoPanel, new GridBagConstraints(0, 3, 1, 1, 1, 1, GridBagConstraints.SOUTH,
+        add(priceLabelPanel, new GridBagConstraints(0, 3, 1, 1, 1, 1, GridBagConstraints.CENTER,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(requestPanel, new GridBagConstraints(0, 4, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(priceFieldPanel, new GridBagConstraints(1, 3, 1, 1, 1, 1, GridBagConstraints.CENTER,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
-        add(backPanel, new GridBagConstraints(1, 4, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        add(infoPanel, new GridBagConstraints(0, 4, 1, 1, 1, 1, GridBagConstraints.SOUTH,
+                GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
+        add(requestPanel, new GridBagConstraints(0, 5, 1, 1, 1, 1, GridBagConstraints.NORTH,
+                GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
+        add(backPanel, new GridBagConstraints(1, 5, 1, 1, 1, 1, GridBagConstraints.NORTH,
                 GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0));
     }
 

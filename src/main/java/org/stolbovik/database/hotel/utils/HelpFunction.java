@@ -16,6 +16,16 @@ public abstract class HelpFunction {
         }
     }
 
+    public static void checkDatesWithNowAndNowDay(@NotNull Date start,
+                                         @NotNull Date end) throws IllegalArgumentException {
+        if (start.compareTo(end) >= 0) {
+            throw new IllegalArgumentException("Начальная дата должна быть раньше конечной");
+        }
+        if (start.compareTo(new Date(new Date().getTime() - 24*60*60*1000)) < 0) {
+            throw new IllegalArgumentException("Начальная дата должна быть в будущем");
+        }
+    }
+
     public static void checkDates(@NotNull Date start,
                                          @NotNull Date end) throws IllegalArgumentException {
         if (start.compareTo(end) >= 0) {

@@ -33,20 +33,32 @@ public class BookingController {
     public int bookRoom(@NotNull String passport, @NotNull String firstName, @NotNull String lastName,
                         @NotNull String fatherName, @NotNull Date start, @NotNull Date end)
                         throws SQLException, IllegalArgumentException {
-        HelpFunction.checkDatesWithNow(start, end);
+        HelpFunction.checkDatesWithNowAndNowDay(start, end);
         HelpFunction.checkName(firstName);
         HelpFunction.checkName(lastName);
         HelpFunction.checkName(fatherName);
         HelpFunction.checkPassport(passport);
+        List<Booking> list = bookingService.getBookings();
         Room room = roomService.getFreeRooms(start, end).get(0);
         if (!clientService.checkClientByPassport(passport)) {
             clientService.addClient(firstName, lastName, fatherName, passport);
         }
         Client client = clientService.getClientByPassport(passport);
+        for (Booking booking : list) {
+            if (booking.getIdOfClient() == client.getId() && (
+                start.compareTo(booking.getDateOfStay()) >= 0 && start.compareTo(booking.getDateOfDeparture()) <= 0 ||
+                        end.compareTo(booking.getDateOfStay()) >= 0 && end.compareTo(booking.getDateOfDeparture()) <= 0 ||
+                        start.compareTo(booking.getDateOfStay()) <= 0 && end.compareTo(booking.getDateOfDeparture()) >= 0)) {
+                throw new IllegalArgumentException("Параллельные брони запрещены");
+            }
+        }
         bookingService.addBooking(start, end, client, room, 1);
         return room.getPriceInDay() * HelpFunction.getDayBetweenDate(start, end);
     }
 
+    public List<Booking> getAllBooking() throws SQLException {
+        return bookingService.getBookings();
+    }
     public String checkIntoTheBookedRoom(@NotNull String passport) throws SQLException, IllegalArgumentException {
         HelpFunction.checkPassport(passport);
         Booking booking = bookingService.getTodayStayBookingByPassport(passport);
@@ -101,6 +113,10 @@ public class BookingController {
                                            @NotNull Date end) throws SQLException {
         HelpFunction.checkDates(start, end);
         return bookingService.getSumIncome(start, end);
+    }
+
+    public void deleteBookingBiId(int id) throws SQLException {
+        bookingService.deleteBookingBiId(id);
     }
 
 }
